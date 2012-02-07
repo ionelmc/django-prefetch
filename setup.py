@@ -10,7 +10,7 @@ setup(
     download_url = '',
     license = 'BSD',
     description = "Generic model related data prefetch framework for Django",
-    long_desription = file(os.path.join(os.path.dirname(__file__), 'README.rst')).read(),
+    long_description = file(os.path.join(os.path.dirname(__file__), 'README.rst')).read(),
     author = 'Ionel Cristian Mărieș',
     author_email = 'contact@ionelmc.ro',
     packages = find_packages('src'),
