@@ -4,8 +4,10 @@
 
 
 Generic model related data prefetch framework for Django. Provides greater
-flexibility than Django 1.4's prefetch_related queryset method at the cost
-writting the mapping fuctions for the data.
+flexibility than Django 1.4's `prefetch_related`__ queryset method at the cost
+of writting the mapping fuctions for the data.
+
+__ https://docs.djangoproject.com/en/dev/ref/models/querysets/#prefetch-related
 
 Installation guide
 ==================
