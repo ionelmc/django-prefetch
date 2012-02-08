@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="36051717-257a-4866-9a3a-c80d23078f8f" kpf_version="5" name="django-prefetch.komodoproject">
+<preference-set idref="36051717-257a-4866-9a3a-c80d23078f8f">
+  <string relative="path" id="import_dirname"></string>
+  <string id="import_exclude_matches">*.*~;*.bak;*.tmp;CVS;.#*;*.pyo;*.pyc;.svn;.git;.hg;.bzr;*%25*;tmp*.html;.DS_Store;*.swp;*.kpf;*.komodoproject;.komodotools;__pycache__;build;dist;.tox</string>
+  <string id="import_include_matches"></string>
+</preference-set>
 </project>

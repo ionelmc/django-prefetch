@@ -87,3 +87,4 @@ TODO
 
  * document ``collect`` option of ``Prefetcher``
  * create tests covering custom ``collect`` and ``mapper``
+ * implement ability to prefetch when using queryset's ``get`` method
