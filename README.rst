@@ -43,7 +43,7 @@ don't call ``prefetch`` on the queryset)::
                 decorator = lambda author, books=(): setattr(
                     author,
                     'prefetched_latest_book',
-                    max(books, lambda book: book.created)
+                    max(books, key=lambda book: book.created)
                 )
             )
         )
