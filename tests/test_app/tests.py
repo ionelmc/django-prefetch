@@ -90,11 +90,15 @@ class PrefetchTests(TestCase):
             self.assertEquals(len(i.selected_tags), 15, i)
             self.assertEquals(set(i.selected_tags), set(tags[::7]), i)
     
-    #def test_books_queryset_get(self):
-    #    i = Author.objects.prefetch('books').get(name="John Doe")
-    #    self.assertTrue(hasattr(i, 'prefetched_books'))
-    #    self.assertEquals(len(i.books), 3, i.books) 
-    #
-    #    i = Author.objects.get(name="John Doe")
-    #    self.assertFalse(hasattr(i, 'prefetched_books'))
-    #    self.assertEquals(len(i.books), 3, i.books) 
+    def test_books_queryset_get(self):
+        author = Author.objects.create(name="John Doe")
+        for i in range(3):
+            Book.objects.create(name="Book %s"%i, author=author)
+
+        i = Author.objects.prefetch('books').get(pk=author.pk)
+        self.assertTrue(hasattr(i, 'prefetched_books'))
+        self.assertEquals(len(i.books), 3, i.books) 
+    
+        i = Author.objects.get(name="John Doe")
+        self.assertFalse(hasattr(i, 'prefetched_books'))
+        self.assertEquals(len(i.books), 3, i.books) 
