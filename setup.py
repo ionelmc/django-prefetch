@@ -5,7 +5,7 @@ import os
 
 setup(
     name = "django-prefetch",
-    version = "0.1.0",
+    version = "0.1.1",
     url = 'https://github.com/ionelmc/django-prefetch',
     download_url = '',
     license = 'BSD',
@@ -15,6 +15,7 @@ setup(
     author_email = 'contact@ionelmc.ro',
     packages = find_packages('src'),
     package_dir = {'':'src'},
+    py_modules = ['prefetch'],
     include_package_data = True,
     zip_safe = False,
     classifiers = [
