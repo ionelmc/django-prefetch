@@ -8,26 +8,6 @@ from django.db import models
 from django.db.models import query
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 
-class FakePrefetchManager(models.Manager):
-    def __init__(self, **kws):
-        super(FakePrefetchManager, self).__init__()
-
-    def get_query_set(self):
-        qs = FakePrefetchQuerySet(self.model)
-        if getattr(self, '_db', None) is not None:
-            qs = qs.using(self._db)
-        return qs
-
-    def prefetch(self, *args):
-        return self.get_query_set()
-
-class FakePrefetchQuerySet(query.QuerySet):
-    def prefetch(self, *args):
-        return self
-
-
-FakePrefetchManager.use_for_related_fields = True
-
 class PrefetchManager(models.Manager):
     def __init__(self, **kwargs):
         super(PrefetchManager, self).__init__()
