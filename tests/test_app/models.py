@@ -96,7 +96,7 @@ class Book(models.Model):
             return self.tags.all()
 
 class BookNote(models.Model):
-    book = models.ForeignKey("Book")
+    book = models.ForeignKey("Book", null=True)
     notes = models.TextField()
 
     objects = PrefetchManager()

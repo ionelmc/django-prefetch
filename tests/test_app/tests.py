@@ -146,6 +146,17 @@ class PrefetchTests(TestCase):
             self.assertEquals(len(note.book.selected_tags), 15, i)
             self.assertEquals(set(note.book.selected_tags), set(tags[::7]), i)
 
+    def test_forwarders_with_null(self):
+        author = Author.objects.create(name="Johnny")
+        book = Book.objects.create(name="Book", author=author)
+        BookNote.objects.create(notes="Note 1", book=book)
+        BookNote.objects.create(notes="Note 2")
+        
+        note1, note2 = BookNote.objects.select_related("book").prefetch("book__tags").order_by('notes')
+        self.assertTrue(hasattr(note1.book, 'prefetched_tags'))
+        self.assertEquals(len(note1.book.selected_tags), 0)
+        self.assertEquals(note2.book, None)
+
     def test_tags(self):
         tags = []
         for i in range(100):
@@ -193,6 +204,10 @@ class PrefetchTests(TestCase):
                 self.assertEquals(len(i.books), 3, i.books) 
 
             for i in Author.objects.using('secondary').prefetch('books').filter(pk=author.pk):
+                self.assertTrue(hasattr(i, 'prefetched_books'))
+                self.assertEquals(len(i.books), 3, i.books) 
+
+            for i in Author.objects.db_manager('secondary').prefetch('books').filter(pk=author.pk):
                 self.assertTrue(hasattr(i, 'prefetched_books'))
                 self.assertEquals(len(i.books), 3, i.books) 
 
