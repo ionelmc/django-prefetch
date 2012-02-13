@@ -2,12 +2,19 @@
     django-prefetch
 ===========================
 
+Simple and generic model related data prefetch framework for Django solving the
+"1+N queries" problem that happens when you need related data for your objects.
+In most of the cases you'll have forward relations (foreign keys to something)
+and can use select_related to fetch that data on the same query. However, in
+some cases you cannot design your models that way and need data from reverse
+relations (models that have foreign keys to your objects). Django 1.4 has
+prefetch_related_ for this, however, this framework provides greater
+flexibility than Django 1.4's prefetch_related_ queryset method at the cost
+of writting the mapping and query functions for the data. This has the advantage
+that you can do things prefetch_related_ cannot (see the latest_book example_
+bellow).
 
-Generic model related data prefetch framework for Django. Provides greater
-flexibility than Django 1.4's `prefetch_related`__ queryset method at the cost
-of writting the mapping fuctions for the data.
-
-__ https://docs.djangoproject.com/en/dev/ref/models/querysets/#prefetch-related
+.. _prefetch_related: https://docs.djangoproject.com/en/dev/ref/models/querysets/#prefetch-related
 
 Installation guide
 ==================
@@ -32,10 +39,10 @@ Here's a simple example of models and prefetch setup::
 
     from django.db import models
     from prefetch import PrefetchManager, Prefetcher
-    
+
     class Author(models.Model):
         name = models.CharField(max_length=100)
-    
+
         objects = PrefetchManager(
             books = Prefetcher(
                 filter = lambda ids: Book.objects.filter(author__in=ids),
@@ -52,11 +59,11 @@ Here's a simple example of models and prefetch setup::
                 )
             )
         )
-    
+
     class Book(models.Model):
         class Meta:
             get_latest_by = 'created'
-    
+
         name = models.CharField(max_length=100)
         created = models.DateTimeField(auto_now_add=True)
         author = models.ForeignKey(Author)
