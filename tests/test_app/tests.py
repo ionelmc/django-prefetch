@@ -204,31 +204,31 @@ class PrefetchTests(TestCase):
         with self.assertRaises(InvalidPrefetch) as cm:
             Book.objects.prefetch('author__asdf')
             
-        self.assertEquals(cm.exception.message, "Invalid part asdf in prefetch call for author__asdf on model <class 'test_app.models.Book'>. The name is not a prefetcher nor a forward relation (fk).")
+        self.assertEquals(cm.exception.args, ("Invalid part asdf in prefetch call for author__asdf on model <class 'test_app.models.Book'>. The name is not a prefetcher nor a forward relation (fk).",))
 
     def test_wrong_prefetch_after_miss(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Book.objects.prefetch('author')
         
-        self.assertEquals(cm.exception.message, "Invalid prefetch call with author for on model <class 'test_app.models.Book'>. The last part isn't a prefetch definition.")
+        self.assertEquals(cm.exception.args, ("Invalid prefetch call with author for on model <class 'test_app.models.Book'>. The last part isn't a prefetch definition.",))
 
     def test_wrong_prefetch_after_wrong(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Author.objects.prefetch('books__asdf')
         
-        self.assertEquals(cm.exception.message, "Invalid part asdf in prefetch call for books__asdf on model <class 'test_app.models.Author'>. You cannot have any more relations after the prefetcher.")
+        self.assertEquals(cm.exception.args, ("Invalid part asdf in prefetch call for books__asdf on model <class 'test_app.models.Author'>. You cannot have any more relations after the prefetcher.",))
 
     def test_wrong_prefetch_fwd_no_manager(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Book.objects.prefetch('publisher__whatev')
             
-        self.assertEquals(cm.exception.message, "Manager for <class 'test_app.models.Publisher'> is not a PrefetchManager instance.")
+        self.assertEquals(cm.exception.args, ("Manager for <class 'test_app.models.Publisher'> is not a PrefetchManager instance.",))
 
     def test_wrong_prefetch(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Author.objects.prefetch('asdf')
             
-        self.assertEquals(cm.exception.message, "Invalid part asdf in prefetch call for asdf on model <class 'test_app.models.Author'>. The name is not a prefetcher nor a forward relation (fk).")
+        self.assertEquals(cm.exception.args, ("Invalid part asdf in prefetch call for asdf on model <class 'test_app.models.Author'>. The name is not a prefetcher nor a forward relation (fk).",))
 
     def test_wrong_definitions(self):
         class Bad1(Prefetcher):
