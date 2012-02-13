@@ -112,23 +112,23 @@ class Prefetcher(object):
 
     Glossary:
 
-    * filter:
+    * filter(list_of_ids):
 
-        A function that returns an iterable (like a queryset) containing all the
-        related data for a given list of keys.
+        A function that returns a queryset containing all the related data for a given list of keys.
+        Takes a list of ids as argument.
 
-    * reverse_mapper:
+    * reverse_mapper(related_object):
 
         A function that takes the related object as argument and returns a list
         of keys that maps that related object to the objects in the queryset.
 
-    * mapper:
+    * mapper(object):
 
         Optional (defaults to ``lambda obj: obj.id``).
 
         A function that returns the key for a given object in your query set.
 
-    * decorator:
+    * decorator(object, list_of_related_objects):
 
         A function that will save the related data on each of your objects in
         your queryset. Takes the object and a list of related objects as
@@ -140,18 +140,18 @@ class Prefetcher(object):
     def __init__(self, filter=None, reverse_mapper=None, decorator=None, mapper=None, collect=False):
         if filter:
             self.filter = filter
-        else:
-            assert hasattr(self, 'filter'), "You must define a filter function"
+        elif not hasattr(self, 'filter'):
+            raise RuntimeError("You must define a filter function")
 
         if reverse_mapper:
             self.reverse_mapper = reverse_mapper
-        else:
-            assert hasattr(self, 'reverse_mapper'), "You must define a reverse_mapper function"
+        elif not hasattr(self, 'reverse_mapper'):
+            raise RuntimeError("You must define a reverse_mapper function")
 
         if decorator:
             self.decorator = decorator
-        else:
-            assert hasattr(self, 'decorator'), "You must define a decorator function"
+        elif not hasattr(self, 'decorator'):
+            raise RuntimeError("You must define a decorator function")
 
         if mapper:
             self.mapper = mapper

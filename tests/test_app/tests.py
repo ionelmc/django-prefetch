@@ -2,6 +2,7 @@ from django import VERSION
 from django.test import TestCase
 
 from .models import Book, Author, Tag, BookNote
+from prefetch import InvalidPrefetch, Prefetcher
 
 class PrefetchTests(TestCase):
     def test_books(self):
@@ -102,3 +103,42 @@ class PrefetchTests(TestCase):
         i = Author.objects.get(name="John Doe")
         self.assertFalse(hasattr(i, 'prefetched_books'))
         self.assertEquals(len(i.books), 3, i.books) 
+    
+    if VERSION >= (1, 2):
+        def test_using_db(self):
+            author = Author.objects.using('secondary').create(name="John Doe")
+            for i in range(3):
+                Book.objects.using('secondary').create(name="Book %s"%i, author=author)
+
+            for i in Author.objects.prefetch('books').filter(pk=author.pk).using('secondary'):
+                self.assertTrue(hasattr(i, 'prefetched_books'))
+                self.assertEquals(len(i.books), 3, i.books) 
+
+            for i in Author.objects.using('secondary').prefetch('books').filter(pk=author.pk):
+                self.assertTrue(hasattr(i, 'prefetched_books'))
+                self.assertEquals(len(i.books), 3, i.books) 
+
+            for i in Author.objects.filter(pk=author.pk).using('secondary'):
+                self.assertFalse(hasattr(i, 'prefetched_books'))
+                self.assertEquals(len(i.books), 3, i.books) 
+
+    def test_wrong_prefetch_fwd(self):
+        self.assertRaises(InvalidPrefetch, lambda: Book.objects.prefetch('author__asdf'))
+
+    def test_wrong_prefetch(self):
+        self.assertRaises(InvalidPrefetch, lambda: Author.objects.prefetch('asdf'))
+
+    def test_wrong_definitions(self):
+        class Bad1(Prefetcher):
+            pass
+        class Bad2(Bad1):
+            def filter(self, ids):
+                pass
+        class Bad3(Bad2):
+            def reverse_mapper(self, obj):
+                pass
+            
+        self.assertRaises(RuntimeError, Bad1)
+        self.assertRaises(RuntimeError, Bad2)
+        self.assertRaises(RuntimeError, Bad3)
+        
