@@ -19,11 +19,16 @@ Install it::
 Use it as your model's default manager (or as a base class if you have custom
 manager).
 
+Requirements
+============
+
+The project has been tested on Django 1.1, 1.2, 1.3, 1.4 and trunk with Python
+2.6 and 2.7.
+
 Example
 =======
 
-Here's a rather elaborate example with a fallback on regular 1+n queries (if you
-don't call ``prefetch`` on the queryset)::
+Here's a simple example of models and prefetch setup::
 
     from django.db import models
     from prefetch import PrefetchManager, Prefetcher
@@ -35,32 +40,18 @@ don't call ``prefetch`` on the queryset)::
             books = Prefetcher(
                 filter = lambda ids: Book.objects.filter(author__in=ids),
                 reverse_mapper = lambda book: [book.author_id],
-                decorator = lambda author, books=(): setattr(author, 'prefetched_books', books)
+                decorator = lambda author, books=(): setattr(author, 'books', books)
             ),
             latest_book = Prefetcher(
                 filter = lambda ids: Book.objects.filter(author__in=ids),
                 reverse_mapper = lambda book: [book.author_id],
                 decorator = lambda author, books=(): setattr(
                     author,
-                    'prefetched_latest_book',
+                    'latest_book',
                     max(books, key=lambda book: book.created)
                 )
             )
         )
-        
-        @property
-        def books(self):
-            if hasattr(self, 'prefetched_books'):
-                return self.prefetched_books
-            else:
-                return self.book_set.all()
-        
-        @property
-        def latest_book(self):
-            if hasattr(self, 'prefetched_latest_book'):
-                return self.prefetched_latest_book
-            else:
-                return self.book_set.latest()
     
     class Book(models.Model):
         class Meta:
@@ -75,15 +66,3 @@ Use it like this::
     for a in Author.objects.prefetch('books', 'latest_book'):
         print a.books
         print a.latest_book
-
-Requirements
-============
-
-The project has been tested on Django 1.1, 1.2, 1.3, 1.4 and trunk with Python
-2.6 and 2.7.
-
-TODO
-====
-
- * document ``collect`` option of ``Prefetcher``
- * create tests covering custom ``collect`` and ``mapper``
