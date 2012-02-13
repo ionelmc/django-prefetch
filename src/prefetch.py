@@ -51,7 +51,8 @@ class PrefetchQuerySet(query.QuerySet):
 
             for what in parts:
                 if not prefetcher:
-                    assert isinstance(model.objects, PrefetchManager), 'Manager for %s is not a PrefetchManager instance.' % model
+                    if not isinstance(model.objects, PrefetchManager):
+                        raise InvalidPrefetch('Manager for %s is not a PrefetchManager instance.' % model)
 
                     if what in model.objects.prefetch_definitions:
                         prefetcher = model.objects.prefetch_definitions[what]
@@ -209,6 +210,6 @@ class Prefetcher(object):
             t2 = time.time()
             logger.debug("Adding the related objects on the %s query took %.3f secs for the %s prefetcher.", model.__name__, t2-t1, name)
             return dataset
-        except:
+        except Exception:
             logger.exception("Prefetch failed for %s prefetch on the %s model:", name, model.__name__)
             raise
