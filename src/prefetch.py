@@ -81,16 +81,18 @@ class PrefetchQuerySet(query.QuerySet):
 
 class Prefetcher(object):
     """
-    Prefetch definitition. For convenience you can either subclass this and define the methods on the subclass or just pass the functions to the contructor. 
-    
+    Prefetch definitition. For convenience you can either subclass this and
+    define the methods on the subclass or just pass the functions to the
+    contructor.
+
     Eg, subclassing::
-    
+
         class GroupPrefetcher(Prefetcher):
-            
+
             @staticmethod
             def filter(ids):
                 return User.groups.through.objects.filter(user__in=ids).select_related('group')
-            
+
             @staticmethod
             def reverse_mapper(user_group_association):
                 return [user_group_association.user_id]
@@ -98,7 +100,7 @@ class Prefetcher(object):
             @staticmethod
             def decorator(user, user_group_associations=()):
                 setattr(user, 'prefetched_groups', [i.group for i in user_group_associations])
-        
+
     Or with contructor::
 
         Prefetcher(
@@ -107,40 +109,45 @@ class Prefetcher(object):
             decorator = lambda user, user_group_associations=(): setattr(user, 'prefetched_groups', [i.group for i in user_group_associations])
         )
 
-    
+
     Glossary:
-    
-    * filter: 
-        
-        A function that returns a iterable containing related data for a given list of keys.
-        
+
+    * filter:
+
+        A function that returns an iterable (like a queryset) containing all the
+        related data for a given list of keys.
+
     * reverse_mapper:
-    
-        A function that takes the related object as argument and returns a list of keys that maps that related object to the objects in the queryset. 
-            
+
+        A function that takes the related object as argument and returns a list
+        of keys that maps that related object to the objects in the queryset.
+
     * mapper:
-        
-        Optional (defaults to ``lambda obj: obj.id``). 
-        
+
+        Optional (defaults to ``lambda obj: obj.id``).
+
         A function that returns the key for a given object in your query set.
-        
+
     * decorator:
-    
-        A function that will save the related data on each of your objects. Takes the object and a list of related objects as arguments.
-    
+
+        A function that will save the related data on each of your objects in
+        your queryset. Takes the object and a list of related objects as
+        arguments. Note that you should not override existing attributes on the
+        model instance here.
+
     """
-    
+
     def __init__(self, filter=None, reverse_mapper=None, decorator=None, mapper=None, collect=False):
         if filter:
             self.filter = filter
         else:
             assert hasattr(self, 'filter'), "You must define a filter function"
-        
+
         if reverse_mapper:
             self.reverse_mapper = reverse_mapper
         else:
             assert hasattr(self, 'reverse_mapper'), "You must define a reverse_mapper function"
-            
+
         if decorator:
             self.decorator = decorator
         else:
@@ -148,13 +155,13 @@ class Prefetcher(object):
 
         if mapper:
             self.mapper = mapper
-            
+
         self.collect = collect
-    
+
     @staticmethod
     def mapper(obj):
         return obj.id
-        
+
     def fetch(self, dataset, name, model, forwarders, db):
         if forwarders:
             self.collect = True
