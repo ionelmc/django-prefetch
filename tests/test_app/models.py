@@ -21,6 +21,7 @@ class Author(models.Model):
     objects = PrefetchManager(
         books = Prefetcher(
             filter = lambda ids: Book.objects.filter(author__in=ids),
+            mapper = lambda author: author.id,
             reverse_mapper = lambda book: [book.author_id],
             decorator = lambda author, books=(): setattr(author, 'prefetched_books', books)
         ),
