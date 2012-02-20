@@ -1,6 +1,8 @@
 import logging
 import logging.handlers
 
+import time
+
 from django import VERSION
 from django.test import TestCase
 
@@ -101,10 +103,11 @@ class PrefetchTests(TestCase):
         author2 = Author.objects.create(name="Johnny")
         for i in range(3, 6):
             Book.objects.create(name="Book %s"%i, author=author1)
+            time.sleep(0.1)
 
         for i in Author.objects.prefetch('latest_book').filter(pk=author1.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_book'))
-            self.assertEquals(i.latest_book.name, "Book 5", i) 
+            self.assertEquals(i.latest_book.name, "Book 5", i.latest_book.name) 
 
         for i in Author.objects.prefetch('latest_book').filter(pk=author2.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_book'))
