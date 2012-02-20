@@ -137,8 +137,9 @@ class Prefetcher(object):
         model instance here.
 
     """
+    collect = False
 
-    def __init__(self, filter=None, reverse_mapper=None, decorator=None, mapper=None, collect=False):
+    def __init__(self, filter=None, reverse_mapper=None, decorator=None, mapper=None, collect=None):
         if filter:
             self.filter = filter
         elif not hasattr(self, 'filter'):
@@ -157,15 +158,16 @@ class Prefetcher(object):
         if mapper:
             self.mapper = mapper
 
-        self.collect = collect
+        if collect is not None:
+            self.collect = collect
 
     @staticmethod
     def mapper(obj):
         return obj.id
 
     def fetch(self, dataset, name, model, forwarders, db):
-        if forwarders:
-            self.collect = True
+        collect = self.collect or forwarders
+
         try:
             data_mapping = collections.defaultdict(list)
             t1 = time.time()
@@ -176,7 +178,7 @@ class Prefetcher(object):
                 if not obj:
                     continue
 
-                if self.collect:
+                if collect:
                     data_mapping[self.mapper(obj)].append(obj)
                 else:
                     data_mapping[self.mapper(obj)] = obj
@@ -201,7 +203,7 @@ class Prefetcher(object):
                         relation_mapping[id_].append(obj)
             for id_, related_items in relation_mapping.items():
                 if id_ in data_mapping:
-                    if self.collect:
+                    if collect:
                         for item in data_mapping[id_]:
                             self.decorator(item, related_items)
                     else:
