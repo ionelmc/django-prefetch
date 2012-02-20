@@ -11,9 +11,11 @@ from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 class PrefetchManager(models.Manager):
     def __init__(self, **kwargs):
         super(PrefetchManager, self).__init__()
+        for name, prefetcher in kwargs.items():
+            if prefetcher.__class__ is not Prefetcher and not callable(prefetcher):
+                raise InvalidPrefetch("Invalid prefetch definition %s. This prefetcher needs to be a class not an instance." % name)
+
         self.prefetch_definitions = kwargs
-        for name in kwargs:
-            kwargs[name].name = name
 
     def get_query_set(self):
         qs = PrefetchQuerySet(self.model)
@@ -29,6 +31,14 @@ PrefetchManager.use_for_related_fields = True
 class InvalidPrefetch(Exception):
     pass
 
+class PrefetchOption(object):
+    def __init__(self, name, *args, **kwargs):
+        self.name = name
+        self.args = args
+        self.kwargs = kwargs
+
+P = PrefetchOption
+
 class PrefetchQuerySet(query.QuerySet):
     def __init__(self, model=None, query=None, using=None):
         if using is None: # this is to support Django 1.1
@@ -43,7 +53,13 @@ class PrefetchQuerySet(query.QuerySet):
     def prefetch(self, *names):
         obj = self._clone()
 
-        for name in names:
+        for opt in names:
+            print opt,
+            if isinstance(opt, PrefetchOption):
+                name = opt.name
+            else:
+                name = opt
+                opt = None
             parts = name.split('__')
             forwarders = []
             prefetcher = None
@@ -67,7 +83,15 @@ class PrefetchQuerySet(query.QuerySet):
                     raise InvalidPrefetch("Invalid part %s in prefetch call for %s on model %s. You cannot have any more relations after the prefetcher." % (what, name, self.model))
             if not prefetcher:
                 raise InvalidPrefetch("Invalid prefetch call with %s for on model %s. The last part isn't a prefetch definition." % (name, self.model))
-            obj._prefetch[name] = forwarders, prefetcher
+            if opt:
+                if prefetcher.__class__ is Prefetcher:
+                    raise InvalidPrefetch("Invalid prefetch call with %s for on model %s. This prefetcher (%s) needs to be a subclass of Prefetcher." % (name, self.model, prefetcher))
+
+                obj._prefetch[name] = forwarders, prefetcher(*opt.args, **opt.kwargs)
+            else:
+                obj._prefetch[name] = forwarders, prefetcher if prefetcher.__class__ is Prefetcher else prefetcher()
+
+
         for forwarders, prefetcher in obj._prefetch.values():
             if forwarders:
                 obj = obj.select_related('__'.join(forwarders))

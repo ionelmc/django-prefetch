@@ -6,14 +6,42 @@ class SillyException(Exception):
     pass
 
 class SillyPrefetcher(Prefetcher):
-    def filter(ids): 
+    def filter(ids):
         raise SillyException()
     def reverse_mapper(book):
         raise SillyException()
-    def decorator(author, books=()): 
+    def decorator(author, books=()):
         raise SillyException()
-    
-    
+
+class LatestNBooks(Prefetcher):
+    def __init__(self, count=2):
+        self.count = count
+
+    def filter(self, ids):
+        return Book.objects.filter(author__in=ids)
+
+    def reverse_mapper(self, book):
+        return [book.author_id]
+
+    def decorator(self, author, books=()):
+        books = sorted(books, key=lambda book: book.created, reverse=True)
+        setattr(author,
+                'prefetched_latest_%s_books' % self.count,
+                books[:self.count])
+
+class LatestBook(Prefetcher):
+    def filter(self, ids):
+        return Book.objects.filter(author__in=ids)
+
+    def reverse_mapper(self, book):
+        return [book.author_id]
+
+    def decorator(self, author, books=()):
+        setattr(
+            author,
+            'prefetched_latest_book',
+            max(books, key=lambda book: book.created) if books else None
+        )
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -25,6 +53,8 @@ class Author(models.Model):
             reverse_mapper = lambda book: [book.author_id],
             decorator = lambda author, books=(): setattr(author, 'prefetched_books', books)
         ),
+        latest_n_books = LatestNBooks,
+        latest_book_as_class = LatestBook,
         latest_book = Prefetcher(
             filter = lambda ids: Book.objects.filter(author__in=ids),
             reverse_mapper = lambda book: [book.author_id],
@@ -34,16 +64,16 @@ class Author(models.Model):
                 max(books, key=lambda book: book.created) if books else None
             )
         ),
-        silly = SillyPrefetcher()
+        silly = SillyPrefetcher
     )
-    
+
     @property
     def books(self):
         if hasattr(self, 'prefetched_books'):
             return self.prefetched_books
         else:
             return self.book_set.all()
-    
+
     @property
     def latest_book(self):
         if hasattr(self, 'prefetched_latest_book'):
@@ -73,12 +103,12 @@ class Book(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(Author)
     publisher = models.ForeignKey(Publisher, null=True)
-    
+
     if VERSION < (1, 2):
         tags = models.ManyToManyField(Tag, through="Book_Tag")
     else:
         tags = models.ManyToManyField(Tag)
-    
+
     objects = PrefetchManager(
         tags = Prefetcher(
             filter = lambda ids: (Book_Tag if VERSION < (1, 2) else Book.tags.through).objects.filter(book__in=ids),
@@ -87,7 +117,7 @@ class Book(models.Model):
                 setattr(user, 'prefetched_tags', [i.tag for i in book_tags])
         )
     )
-    
+
     @property
     def selected_tags(self):
         if hasattr(self, 'prefetched_tags'):

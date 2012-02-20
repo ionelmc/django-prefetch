@@ -5,5 +5,9 @@
   <string relative="path" id="import_dirname"></string>
   <string id="import_exclude_matches">*.*~;*.bak;*.tmp;CVS;.#*;*.pyo;*.pyc;.svn;.git;.hg;.bzr;*%25*;tmp*.html;.DS_Store;*.swp;*.kpf;*.komodoproject;.komodotools;__pycache__;build;dist;.tox</string>
   <string id="import_include_matches"></string>
+  <string id="pythonDefaultInterpreter"></string>
+  <string relative="path" id="pythonExtraPaths">.tox/py2.7-django1.3/lib/python2.7/site-packages</string>
+  <string id="python_debuggerLogLevel">WARN</string>
+  <string id="python_debuggerLogPath"></string>
 </preference-set>
 </project>
