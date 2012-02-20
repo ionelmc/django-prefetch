@@ -73,3 +73,50 @@ Use it like this::
     for a in Author.objects.prefetch('books', 'latest_book'):
         print a.books
         print a.latest_book
+
+Prefetcher arguments
+--------------------
+
+Example models::
+
+    class LatestNBooks(Prefetcher):
+        def __init__(self, count=2):
+            self.count = count
+
+        def filter(self, ids):
+            return Book.objects.filter(author__in=ids)
+
+        def reverse_mapper(self, book):
+            return [book.author_id]
+
+        def decorator(self, author, books=()):
+            books = sorted(books, key=lambda book: book.created, reverse=True)
+            setattr(author,
+                    'prefetched_latest_%s_books' % self.count,
+                    books[:self.count])
+
+    class Author(models.Model):
+        name = models.CharField(max_length=100)
+
+        objects = PrefetchManager(
+            latest_n_books = LatestNBooks
+        )
+
+
+Use it like this::
+
+    from prefetch import P
+
+    for a in Author.objects.prefetch(P('latest_n_books', count=5)):
+        print a.latest_5_book
+
+.. note::
+
+    ``P`` is optional and you can't use it with prefetcher-instance style
+    definitions (first example).
+
+
+Other examples
+--------------
+
+Check out the tests for more examples.
