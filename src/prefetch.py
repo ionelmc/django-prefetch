@@ -54,7 +54,6 @@ class PrefetchQuerySet(query.QuerySet):
         obj = self._clone()
 
         for opt in names:
-            print opt,
             if isinstance(opt, PrefetchOption):
                 name = opt.name
             else:
