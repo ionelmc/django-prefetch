@@ -32,7 +32,7 @@ Requirements
 The project has been tested on Django 1.1, 1.2, 1.3, 1.4 and trunk with Python
 2.6 and 2.7.
 
-CI: |status|_.
+|status|_
 
 .. |status| image:: http://travis-ci.org/ionelmc/django-prefetch.png
 .. _status: http://travis-ci.org/ionelmc/django-prefetch
