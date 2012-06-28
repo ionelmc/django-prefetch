@@ -18,7 +18,9 @@ class PrefetchManager(models.Manager):
         self.prefetch_definitions = kwargs
 
     def get_query_set(self):
-        qs = PrefetchQuerySet(self.model)
+        qs = PrefetchQuerySet(self.model, 
+            prefetch_definitions = self.prefetch_definitions)
+
         if getattr(self, '_db', None) is not None:
             qs = qs.using(self._db)
         return qs
@@ -40,15 +42,19 @@ class PrefetchOption(object):
 P = PrefetchOption
 
 class PrefetchQuerySet(query.QuerySet):
-    def __init__(self, model=None, query=None, using=None):
+    def __init__(self, model=None, query=None, using=None,
+                                                prefetch_definitions = None):
         if using is None: # this is to support Django 1.1
             super(PrefetchQuerySet, self).__init__(model, query)
         else:
             super(PrefetchQuerySet, self).__init__(model, query, using)
         self._prefetch = {}
+        self.prefetch_definitions = prefetch_definitions
 
     def _clone(self, klass=None, setup=False, **kwargs):
-        return super(PrefetchQuerySet, self)._clone(klass, setup, _prefetch=self._prefetch, **kwargs)
+        return super(PrefetchQuerySet, self)._clone(klass, setup,
+            _prefetch=self._prefetch,
+            prefetch_definitions= self.prefetch_definitions, **kwargs)
 
     def prefetch(self, *names):
         obj = self._clone()
@@ -66,11 +72,9 @@ class PrefetchQuerySet(query.QuerySet):
 
             for what in parts:
                 if not prefetcher:
-                    if not isinstance(model.objects, PrefetchManager):
-                        raise InvalidPrefetch('Manager for %s is not a PrefetchManager instance.' % model)
 
-                    if what in model.objects.prefetch_definitions:
-                        prefetcher = model.objects.prefetch_definitions[what]
+                    if what in self.prefetch_definitions:
+                        prefetcher = self.prefetch_definitions[what]
                         continue
                     descriptor = getattr(model, what, None)
                     if isinstance(descriptor, ReverseSingleRelatedObjectDescriptor):
