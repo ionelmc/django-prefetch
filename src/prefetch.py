@@ -8,17 +8,25 @@ from django.db import models
 from django.db.models import query
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 
-class PrefetchManager(models.Manager):
-    def __init__(self, **kwargs):
-        super(PrefetchManager, self).__init__()
-        for name, prefetcher in kwargs.items():
+class PrefetchManagerMixin(models.Manager):
+
+    use_for_related_fields = True
+
+    @classmethod
+    def get_query_set_class(cls):
+        return PrefetchQuerySet
+
+    def __init__(self):
+        super(PrefetchManagerMixin, self).__init__()
+        if not hasattr(self, 'prefetch_definitions'):
+            self.prefetch_definitions = {}
+
+        for name, prefetcher in self.prefetch_definitions.items():
             if prefetcher.__class__ is not Prefetcher and not callable(prefetcher):
                 raise InvalidPrefetch("Invalid prefetch definition %s. This prefetcher needs to be a class not an instance." % name)
 
-        self.prefetch_definitions = kwargs
-
     def get_query_set(self):
-        qs = PrefetchQuerySet(self.model, 
+        qs = self.get_query_set_class()(self.model, 
             prefetch_definitions = self.prefetch_definitions)
 
         if getattr(self, '_db', None) is not None:
@@ -28,7 +36,11 @@ class PrefetchManager(models.Manager):
     def prefetch(self, *args):
         return self.get_query_set().prefetch(*args)
 
-PrefetchManager.use_for_related_fields = True
+
+class PrefetchManager(PrefetchManagerMixin):
+    def __init__(self, **kwargs):
+        self.prefetch_definitions = kwargs
+        super(PrefetchManager, self).__init__()
 
 class InvalidPrefetch(Exception):
     pass
