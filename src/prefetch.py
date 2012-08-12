@@ -8,17 +8,31 @@ from django.db import models
 from django.db.models import query
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 
-class PrefetchManager(models.Manager):
-    def __init__(self, **kwargs):
-        super(PrefetchManager, self).__init__()
-        for name, prefetcher in kwargs.items():
+class PrefetchManagerMixin(models.Manager):
+
+    use_for_related_fields = True
+
+    @classmethod
+    def get_query_set_class(cls):
+        return PrefetchQuerySet
+
+    def __init__(self):
+        super(PrefetchManagerMixin, self).__init__()
+        if not hasattr(self, 'prefetch_definitions'):
+            self.prefetch_definitions = {}
+
+        if not hasattr(self, 'manager_name'):
+            self.manager_name = 'objects'
+
+        for name, prefetcher in self.prefetch_definitions.items():
             if prefetcher.__class__ is not Prefetcher and not callable(prefetcher):
                 raise InvalidPrefetch("Invalid prefetch definition %s. This prefetcher needs to be a class not an instance." % name)
 
-        self.prefetch_definitions = kwargs
-
     def get_query_set(self):
-        qs = PrefetchQuerySet(self.model)
+        qs = self.get_query_set_class()(self.model,
+             prefetch_definitions = self.prefetch_definitions,
+             manager_name = self.manager_name)
+
         if getattr(self, '_db', None) is not None:
             qs = qs.using(self._db)
         return qs
@@ -26,7 +40,11 @@ class PrefetchManager(models.Manager):
     def prefetch(self, *args):
         return self.get_query_set().prefetch(*args)
 
-PrefetchManager.use_for_related_fields = True
+
+class PrefetchManager(PrefetchManagerMixin):
+    def __init__(self, **kwargs):
+        self.prefetch_definitions = kwargs
+        super(PrefetchManager, self).__init__()
 
 class InvalidPrefetch(Exception):
     pass
@@ -40,15 +58,21 @@ class PrefetchOption(object):
 P = PrefetchOption
 
 class PrefetchQuerySet(query.QuerySet):
-    def __init__(self, model=None, query=None, using=None):
+    def __init__(self, model=None, query=None, using=None,
+                 prefetch_definitions = None, manager_name = 'objects'):
         if using is None: # this is to support Django 1.1
             super(PrefetchQuerySet, self).__init__(model, query)
         else:
             super(PrefetchQuerySet, self).__init__(model, query, using)
         self._prefetch = {}
+        self.prefetch_definitions = prefetch_definitions
+        self.manager_name = manager_name
 
     def _clone(self, klass=None, setup=False, **kwargs):
-        return super(PrefetchQuerySet, self)._clone(klass, setup, _prefetch=self._prefetch, **kwargs)
+        return super(PrefetchQuerySet, self). \
+            _clone(klass, setup, _prefetch=self._prefetch,
+                   prefetch_definitions= self.prefetch_definitions,
+                   manager_name = self.manager_name, **kwargs)
 
     def prefetch(self, *names):
         obj = self._clone()
@@ -63,19 +87,21 @@ class PrefetchQuerySet(query.QuerySet):
             forwarders = []
             prefetcher = None
             model = self.model
+            prefetch_definitions = self.prefetch_definitions
 
             for what in parts:
                 if not prefetcher:
-                    if not isinstance(model.objects, PrefetchManager):
-                        raise InvalidPrefetch('Manager for %s is not a PrefetchManager instance.' % model)
-
-                    if what in model.objects.prefetch_definitions:
-                        prefetcher = model.objects.prefetch_definitions[what]
+                    if what in prefetch_definitions:
+                        prefetcher = prefetch_definitions[what]
                         continue
                     descriptor = getattr(model, what, None)
                     if isinstance(descriptor, ReverseSingleRelatedObjectDescriptor):
                         forwarders.append(descriptor.field.name)
                         model = descriptor.field.rel.to
+                        manager = getattr(model, self.manager_name)
+                        if not isinstance(manager, PrefetchManager):
+                            raise InvalidPrefetch('Manager for %s is not a PrefetchManager instance.' % model)
+                        prefetch_definitions = manager.prefetch_definitions
                     else:
                         raise InvalidPrefetch("Invalid part %s in prefetch call for %s on model %s. The name is not a prefetcher nor a forward relation (fk)." % (what, name, self.model))
                 else:
