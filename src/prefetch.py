@@ -21,13 +21,17 @@ class PrefetchManagerMixin(models.Manager):
         if not hasattr(self, 'prefetch_definitions'):
             self.prefetch_definitions = {}
 
+        if not hasattr(self, 'manager_name'):
+            self.manager_name = 'objects'
+
         for name, prefetcher in self.prefetch_definitions.items():
             if prefetcher.__class__ is not Prefetcher and not callable(prefetcher):
                 raise InvalidPrefetch("Invalid prefetch definition %s. This prefetcher needs to be a class not an instance." % name)
 
     def get_query_set(self):
-        qs = self.get_query_set_class()(self.model, 
-            prefetch_definitions = self.prefetch_definitions)
+        qs = self.get_query_set_class()(self.model,
+             prefetch_definitions = self.prefetch_definitions,
+             manager_name = self.manager_name)
 
         if getattr(self, '_db', None) is not None:
             qs = qs.using(self._db)
@@ -55,18 +59,20 @@ P = PrefetchOption
 
 class PrefetchQuerySet(query.QuerySet):
     def __init__(self, model=None, query=None, using=None,
-                                                prefetch_definitions = None):
+                 prefetch_definitions = None, manager_name = 'objects'):
         if using is None: # this is to support Django 1.1
             super(PrefetchQuerySet, self).__init__(model, query)
         else:
             super(PrefetchQuerySet, self).__init__(model, query, using)
         self._prefetch = {}
         self.prefetch_definitions = prefetch_definitions
+        self.manager_name = manager_name
 
     def _clone(self, klass=None, setup=False, **kwargs):
-        return super(PrefetchQuerySet, self)._clone(klass, setup,
-            _prefetch=self._prefetch,
-            prefetch_definitions= self.prefetch_definitions, **kwargs)
+        return super(PrefetchQuerySet, self). \
+            _clone(klass, setup, _prefetch=self._prefetch,
+                   prefetch_definitions= self.prefetch_definitions,
+                   manager_name = self.manager_name, **kwargs)
 
     def prefetch(self, *names):
         obj = self._clone()
@@ -81,17 +87,21 @@ class PrefetchQuerySet(query.QuerySet):
             forwarders = []
             prefetcher = None
             model = self.model
+            prefetch_definitions = self.prefetch_definitions
 
             for what in parts:
                 if not prefetcher:
-
-                    if what in self.prefetch_definitions:
-                        prefetcher = self.prefetch_definitions[what]
+                    if what in prefetch_definitions:
+                        prefetcher = prefetch_definitions[what]
                         continue
                     descriptor = getattr(model, what, None)
                     if isinstance(descriptor, ReverseSingleRelatedObjectDescriptor):
                         forwarders.append(descriptor.field.name)
                         model = descriptor.field.rel.to
+                        manager = getattr(model, self.manager_name)
+                        if not isinstance(manager, PrefetchManager):
+                            raise InvalidPrefetch('Manager for %s is not a PrefetchManager instance.' % model)
+                        prefetch_definitions = manager.prefetch_definitions
                     else:
                         raise InvalidPrefetch("Invalid part %s in prefetch call for %s on model %s. The name is not a prefetcher nor a forward relation (fk)." % (what, name, self.model))
                 else:
