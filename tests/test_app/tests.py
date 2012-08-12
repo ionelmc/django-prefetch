@@ -199,6 +199,47 @@ class PrefetchTests(TestCase):
             self.assertEquals(len(note.book.selected_tags), 15, i)
             self.assertEquals(set(note.book.selected_tags), set(tags[::7]), i)
 
+    def test_manual_forwarders_aka_collect(self):
+        authors = [
+            Author.objects.create(name="Johnny-%s" % i) for i in range(20)
+        ]
+
+        for author in authors:
+            for i in range(20, 25):
+                book = Book.objects.create(name="Book %s"%i, author=author)
+
+        for book in Book.objects.select_related('author').prefetch('similar_books'):
+            self.assertTrue(hasattr(book.author, 'prefetched_books'))
+            self.assertEquals(len(book.similar_books), 4, book.similar_books)
+            self.assertEquals(
+                set(book.similar_books),
+                set(Book.objects.filter(
+                    author = book.author_id
+                ).exclude(
+                    id = book.id
+                ))
+            )
+
+        failed = 0
+        for book in Book.objects.select_related('author').prefetch('similar_books_missing_collect'):
+            self.assertTrue(hasattr(book.author, 'prefetched_books'))
+            if len(book.similar_books) != 4:
+                failed += 1
+        self.assertTrue(failed > 0, "There's should be at least 1 failure for similar_books_missing_collect prefetcher.")
+
+        for book in Book.objects.select_related('author'):
+            self.assertFalse(hasattr(book.author, 'prefetched_books'))
+            self.assertEquals(len(book.similar_books), 4, book.similar_books)
+            self.assertEquals(
+                set(book.similar_books),
+                set(Book.objects.filter(
+                    author = book.author_id
+                ).exclude(
+                    id = book.id
+                ))
+            )
+
+
     def test_forwarders_with_null(self):
         author = Author.objects.create(name="Johnny")
         book = Book.objects.create(name="Book", author=author)

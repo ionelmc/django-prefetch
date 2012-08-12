@@ -51,7 +51,8 @@ class Author(models.Model):
             filter = lambda ids: Book.objects.filter(author__in=ids),
             mapper = lambda author: author.id,
             reverse_mapper = lambda book: [book.author_id],
-            decorator = lambda author, books=(): setattr(author, 'prefetched_books', books)
+            decorator = lambda author, books=():
+                setattr(author, 'prefetched_books', books)
         ),
         latest_n_books = LatestNBooks,
         latest_book_as_class = LatestBook,
@@ -64,7 +65,7 @@ class Author(models.Model):
                 max(books, key=lambda book: book.created) if books else None
             )
         ),
-        silly = SillyPrefetcher
+        silly = SillyPrefetcher,
     )
 
     @property
@@ -115,8 +116,34 @@ class Book(models.Model):
             reverse_mapper = lambda book_tag: [book_tag.book_id],
             decorator = lambda user, book_tags=():
                 setattr(user, 'prefetched_tags', [i.tag for i in book_tags])
-        )
+        ),
+        similar_books = Prefetcher(
+            filter = lambda ids: Book.objects.filter(author__in=ids),
+            mapper = lambda book: book.author_id,
+            reverse_mapper = lambda book: [book.author_id],
+            decorator = lambda book, books=():
+                setattr(book.author, 'prefetched_books', books),
+            collect = True,
+        ),
+        similar_books_missing_collect = Prefetcher(
+            filter = lambda ids: Book.objects.filter(author__in=ids),
+            mapper = lambda book: book.author_id,
+            reverse_mapper = lambda book: [book.author_id],
+            decorator = lambda book, books=():
+                setattr(book.author, 'prefetched_books', books),
+        ),
     )
+
+    @property
+    def similar_books(self):
+        if hasattr(self.author, 'prefetched_books'):
+            return [i for i in self.author.prefetched_books if i != self]
+        else:
+            return Book.objects.filter(
+                author = self.author_id
+            ).exclude(
+                id = self.id
+            )
 
     @property
     def selected_tags(self):
