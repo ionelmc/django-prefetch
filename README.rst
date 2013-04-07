@@ -4,11 +4,13 @@
 
 Simple and generic model related data prefetch framework for Django solving the
 "1+N queries" problem that happens when you need related data for your objects.
+
 In most of the cases you'll have forward relations (foreign keys to something)
 and can use select_related to fetch that data on the same query. However, in
 some cases you cannot design your models that way and need data from reverse
-relations (models that have foreign keys to your objects). Django 1.4 has
-prefetch_related_ for this, however, this framework provides greater
+relations (models that have foreign keys to your objects). 
+
+Django 1.4 has prefetch_related_ for this, however, this framework provides greater
 flexibility than Django 1.4's prefetch_related_ queryset method at the cost
 of writting the mapping and query functions for the data. This has the advantage
 that you can do things prefetch_related_ cannot (see the latest_book example_
@@ -96,7 +98,7 @@ Example models::
         def decorator(self, author, books=()):
             books = sorted(books, key=lambda book: book.created, reverse=True)
             setattr(author,
-                    'prefetched_latest_%s_books' % self.count,
+                    'latest_%s_books' % self.count,
                     books[:self.count])
 
     class Author(models.Model):
@@ -116,8 +118,8 @@ Use it like this::
 
 .. note::
 
-    ``P`` is optional and you can't use it with prefetcher-instance style
-    definitions (first example).
+    ``P`` is optional and you can only use for prefetch definitions that are Prefetcher subclasses. You can't use it with prefetcher-instance style
+    definitions like in the first example. Don't worry, if you do, you will get an exception explaining what's wrong.
 
 
 Other examples
