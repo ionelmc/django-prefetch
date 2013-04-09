@@ -41,7 +41,9 @@ The project has been tested on Django 1.1, 1.2, 1.3, 1.4 and trunk with Python
 Example
 =======
 
-Here's a simple example of models and prefetch setup::
+Here's a simple example of models and prefetch setup:
+
+.. code-block:: python
 
     from django.db import models
     from prefetch import PrefetchManager, Prefetcher
@@ -74,7 +76,9 @@ Here's a simple example of models and prefetch setup::
         created = models.DateTimeField(auto_now_add=True)
         author = models.ForeignKey(Author)
 
-Use it like this::
+Use it like this:
+
+.. code-block:: python
 
     for a in Author.objects.prefetch('books', 'latest_book'):
         print a.books
@@ -83,7 +87,9 @@ Use it like this::
 Prefetcher arguments
 --------------------
 
-Example models::
+Example models:
+
+.. code-block:: python
 
     class LatestNBooks(Prefetcher):
         def __init__(self, count=2):
@@ -109,7 +115,9 @@ Example models::
         )
 
 
-Use it like this::
+Use it like this:
+
+.. code-block:: python
 
     from prefetch import P
 
