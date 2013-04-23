@@ -8,7 +8,7 @@ Simple and generic model related data prefetch framework for Django solving the
 In most of the cases you'll have forward relations (foreign keys to something)
 and can use select_related to fetch that data on the same query. However, in
 some cases you cannot design your models that way and need data from reverse
-relations (models that have foreign keys to your objects). 
+relations (models that have foreign keys to your objects).
 
 Django 1.4 has prefetch_related_ for this, however, this framework provides greater
 flexibility than Django 1.4's prefetch_related_ queryset method at the cost
@@ -37,6 +37,10 @@ The project has been tested on Django 1.1, 1.2, 1.3, 1.4 and trunk with Python
 .. image:: https://secure.travis-ci.org/ionelmc/django-prefetch.png
     :alt: Build Status
     :target: http://travis-ci.org/ionelmc/django-prefetch
+
+.. image:: https://coveralls.io/repos/ionelmc/django-prefetch/badge.png?branch=master
+    :alt: Coverage Status
+    :target: https://coveralls.io/r/ionelmc/django-prefetch
 
 Example
 =======
