@@ -5,3 +5,7 @@ python:
 install: pip install tox 
 # command to run tests
 script: tox
+notifications:
+  email:
+    on_success: never
+    on_failure: always
