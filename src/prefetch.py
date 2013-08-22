@@ -36,7 +36,7 @@ class PrefetchManagerMixin(models.Manager):
         Django <1.6 compatibility method.
         """
 
-        return get_queryset(self)
+        return self.get_queryset(self)
 
     def prefetch(self, *args):
         return self.get_queryset().prefetch(*args)
