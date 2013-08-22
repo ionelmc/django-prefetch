@@ -13,7 +13,7 @@ class PrefetchManagerMixin(models.Manager):
     prefetch_definitions = {}
 
     @classmethod
-    def get_query_set_class(cls):
+    def get_queryset_class(cls):
         return PrefetchQuerySet
 
     def __init__(self):
@@ -22,8 +22,8 @@ class PrefetchManagerMixin(models.Manager):
             if prefetcher.__class__ is not Prefetcher and not callable(prefetcher):
                 raise InvalidPrefetch("Invalid prefetch definition %s. This prefetcher needs to be a class not an instance." % name)
 
-    def get_query_set(self):
-        qs = self.get_query_set_class()(
+    def get_queryset(self):
+        qs = self.get_queryset_class()(
             self.model, prefetch_definitions=self.prefetch_definitions
         )
 
@@ -32,7 +32,7 @@ class PrefetchManagerMixin(models.Manager):
         return qs
 
     def prefetch(self, *args):
-        return self.get_query_set().prefetch(*args)
+        return self.get_queryset().prefetch(*args)
 
 
 class PrefetchManager(PrefetchManagerMixin):
