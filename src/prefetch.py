@@ -19,7 +19,7 @@ class PrefetchManagerMixin(models.Manager):
     def __init__(self):
         super(PrefetchManagerMixin, self).__init__()
         for name, prefetcher in self.prefetch_definitions.items():
-            if prefetcher.__class__ is not Prefetcher and not callable(prefetcher):
+            if not isinstance(prefetcher, Prefetcher) and not callable(prefetcher):
                 raise InvalidPrefetch("Invalid prefetch definition %s. This prefetcher needs to be a class not an instance." % name)
 
     def get_queryset(self):
