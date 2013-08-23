@@ -108,12 +108,12 @@ class PrefetchQuerySet(query.QuerySet):
             if not prefetcher:
                 raise InvalidPrefetch("Invalid prefetch call with %s for on model %s. The last part isn't a prefetch definition." % (name, self.model))
             if opt:
-                if prefetcher.__class__ is Prefetcher:
+                if isinstance(prefetcher, Prefetcher):
                     raise InvalidPrefetch("Invalid prefetch call with %s for on model %s. This prefetcher (%s) needs to be a subclass of Prefetcher." % (name, self.model, prefetcher))
 
                 obj._prefetch[name] = forwarders, prefetcher(*opt.args, **opt.kwargs)
             else:
-                obj._prefetch[name] = forwarders, prefetcher if prefetcher.__class__ is Prefetcher else prefetcher()
+                obj._prefetch[name] = forwarders, prefetcher if isinstance(prefetcher, Prefetcher) else prefetcher()
 
 
         for forwarders, prefetcher in obj._prefetch.values():
