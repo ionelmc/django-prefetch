@@ -138,3 +138,9 @@ Other examples
 --------------
 
 Check out the tests for more examples.
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/ionelmc/django-prefetch/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
