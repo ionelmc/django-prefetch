@@ -2,6 +2,18 @@
     django-prefetch
 ===========================
 
+.. image:: https://secure.travis-ci.org/ionelmc/django-prefetch.png
+    :alt: Build Status
+    :target: http://travis-ci.org/ionelmc/django-prefetch
+
+.. image:: https://coveralls.io/repos/ionelmc/django-prefetch/badge.png?branch=master
+    :alt: Coverage Status
+    :target: https://coveralls.io/r/ionelmc/django-prefetch
+
+.. image:: https://badge.fury.io/py/django-prefetch.png
+    :alt: PYPI Package
+    :target: https://pypi.python.org/pypi/django-prefetch
+
 Simple and generic model related data prefetch framework for Django solving the
 "1+N queries" problem that happens when you need related data for your objects.
 
@@ -33,14 +45,6 @@ Requirements
 
 The project has been tested on Django 1.1, 1.2, 1.3, 1.4 and trunk with Python
 2.6 and 2.7.
-
-.. image:: https://secure.travis-ci.org/ionelmc/django-prefetch.png
-    :alt: Build Status
-    :target: http://travis-ci.org/ionelmc/django-prefetch
-
-.. image:: https://coveralls.io/repos/ionelmc/django-prefetch/badge.png?branch=master
-    :alt: Coverage Status
-    :target: https://coveralls.io/r/ionelmc/django-prefetch
 
 Example
 =======
