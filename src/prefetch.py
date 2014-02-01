@@ -123,7 +123,7 @@ class PrefetchQuerySet(query.QuerySet):
 
     def iterator(self):
         data = list(super(PrefetchQuerySet, self).iterator())
-        for name, (forwarders, prefetcher) in self._prefetch.iteritems():
+        for name, (forwarders, prefetcher) in self._prefetch.items():
             prefetcher.fetch(data, name, self.model, forwarders,
                              getattr(self, '_db', None))
         return iter(data)

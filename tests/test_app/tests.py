@@ -61,7 +61,7 @@ class _AssertRaisesContext(object):
 class PrefetchTests(TestCase):
     def assertRegexpMatches(self, text, expected_regexp, msg=None):
         """Fail the test unless the text matches the regular expression."""
-        if isinstance(expected_regexp, basestring):
+        if isinstance(expected_regexp, str):
             expected_regexp = re.compile(expected_regexp)
         if not expected_regexp.search(text):
             msg = msg or "Regexp didn't match"
@@ -104,11 +104,11 @@ class PrefetchTests(TestCase):
 
         for i in Author.objects.prefetch('books').filter(pk=author.pk):
             self.assertTrue(hasattr(i, 'prefetched_books'))
-            self.assertEquals(len(i.books), 3, i.books)
+            self.assertEqual(len(i.books), 3, i.books)
 
         for i in Author.objects.filter(pk=author.pk):
             self.assertFalse(hasattr(i, 'prefetched_books'))
-            self.assertEquals(len(i.books), 3, i.books)
+            self.assertEqual(len(i.books), 3, i.books)
 
     def test_latest_n_books(self):
         author1 = Author.objects.create(name="Johnny")
@@ -118,28 +118,28 @@ class PrefetchTests(TestCase):
 
         for i in Author.objects.prefetch('latest_n_books').filter(pk=author1.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_2_books'))
-            self.assertEquals(
+            self.assertEqual(
                 [j.name for j in i.prefetched_latest_2_books],
                 ["Book 29", "Book 28"]
             )
 
         for i in Author.objects.prefetch(P('latest_n_books')).filter(pk=author1.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_2_books'))
-            self.assertEquals(
+            self.assertEqual(
                 [j.name for j in i.prefetched_latest_2_books],
                 ["Book 29", "Book 28"]
             )
 
         for i in Author.objects.prefetch(P('latest_n_books', 5)).filter(pk=author1.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_5_books'))
-            self.assertEquals(
+            self.assertEqual(
                 [j.name for j in i.prefetched_latest_5_books],
                 ["Book 29", "Book 28", "Book 27", "Book 26", "Book 25"]
             )
 
         for i in Author.objects.prefetch(P('latest_n_books', count=5)).filter(pk=author1.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_5_books'))
-            self.assertEquals(
+            self.assertEqual(
                 [j.name for j in i.prefetched_latest_5_books],
                 ["Book 29", "Book 28", "Book 27", "Book 26", "Book 25"]
             )
@@ -153,23 +153,23 @@ class PrefetchTests(TestCase):
 
         for i in Author.objects.prefetch('latest_book').filter(pk=author1.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_book'))
-            self.assertEquals(i.latest_book.name, "Book 5", i.latest_book.name)
+            self.assertEqual(i.latest_book.name, "Book 5", i.latest_book.name)
 
         for i in Author.objects.prefetch('latest_book_as_class').filter(pk=author1.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_book'))
-            self.assertEquals(i.latest_book.name, "Book 5", i)
+            self.assertEqual(i.latest_book.name, "Book 5", i)
 
         for i in Author.objects.prefetch('latest_book_as_class').filter(pk=author2.pk):
             self.assertTrue(hasattr(i, 'prefetched_latest_book'))
-            self.assertEquals(i.latest_book, None, i)
+            self.assertEqual(i.latest_book, None, i)
 
         for i in Author.objects.filter(pk=author1.pk):
             self.assertFalse(hasattr(i, 'prefetched_latest_book'))
-            self.assertEquals(i.latest_book.name, "Book 5", i)
+            self.assertEqual(i.latest_book.name, "Book 5", i)
 
         for i in Author.objects.filter(pk=author2.pk):
             self.assertFalse(hasattr(i, 'prefetched_latest_book'))
-            self.assertEquals(i.latest_book, None, i)
+            self.assertEqual(i.latest_book, None, i)
 
     def test_forwarders(self):
         author = Author.objects.create(name="Johnny")
@@ -191,13 +191,13 @@ class PrefetchTests(TestCase):
 
         for note in BookNote.objects.select_related("book").prefetch("book__tags"):
             self.assertTrue(hasattr(note.book, 'prefetched_tags'))
-            self.assertEquals(len(note.book.selected_tags), 15, i)
-            self.assertEquals(set(note.book.selected_tags), set(tags[::7]), i)
+            self.assertEqual(len(note.book.selected_tags), 15, i)
+            self.assertEqual(set(note.book.selected_tags), set(tags[::7]), i)
 
         for note in BookNote.objects.select_related("book"):
             self.assertFalse(hasattr(note.book, 'prefetched_tags'))
-            self.assertEquals(len(note.book.selected_tags), 15, i)
-            self.assertEquals(set(note.book.selected_tags), set(tags[::7]), i)
+            self.assertEqual(len(note.book.selected_tags), 15, i)
+            self.assertEqual(set(note.book.selected_tags), set(tags[::7]), i)
 
     def test_manual_forwarders_aka_collect(self):
         authors = [
@@ -210,8 +210,8 @@ class PrefetchTests(TestCase):
 
         for book in Book.objects.select_related('author').prefetch('similar_books'):
             self.assertTrue(hasattr(book.author, 'prefetched_books'))
-            self.assertEquals(len(book.similar_books), 4, book.similar_books)
-            self.assertEquals(
+            self.assertEqual(len(book.similar_books), 4, book.similar_books)
+            self.assertEqual(
                 set(book.similar_books),
                 set(Book.objects.filter(
                     author = book.author_id
@@ -229,8 +229,8 @@ class PrefetchTests(TestCase):
 
         for book in Book.objects.select_related('author'):
             self.assertFalse(hasattr(book.author, 'prefetched_books'))
-            self.assertEquals(len(book.similar_books), 4, book.similar_books)
-            self.assertEquals(
+            self.assertEqual(len(book.similar_books), 4, book.similar_books)
+            self.assertEqual(
                 set(book.similar_books),
                 set(Book.objects.filter(
                     author = book.author_id
@@ -248,8 +248,8 @@ class PrefetchTests(TestCase):
 
         note1, note2 = BookNote.objects.select_related("book").prefetch("book__tags").order_by('notes')
         self.assertTrue(hasattr(note1.book, 'prefetched_tags'))
-        self.assertEquals(len(note1.book.selected_tags), 0)
-        self.assertEquals(note2.book, None)
+        self.assertEqual(len(note1.book.selected_tags), 0)
+        self.assertEqual(note2.book, None)
 
     def test_tags(self):
         tags = []
@@ -266,13 +266,13 @@ class PrefetchTests(TestCase):
 
         for i in Book.objects.prefetch('tags').filter(pk=book.pk):
             self.assertTrue(hasattr(i, 'prefetched_tags'))
-            self.assertEquals(len(i.selected_tags), 15, i)
-            self.assertEquals(set(i.selected_tags), set(tags[::7]), i)
+            self.assertEqual(len(i.selected_tags), 15, i)
+            self.assertEqual(set(i.selected_tags), set(tags[::7]), i)
 
         for i in Book.objects.filter(pk=book.pk):
             self.assertFalse(hasattr(i, 'prefetched_tags'))
-            self.assertEquals(len(i.selected_tags), 15, i)
-            self.assertEquals(set(i.selected_tags), set(tags[::7]), i)
+            self.assertEqual(len(i.selected_tags), 15, i)
+            self.assertEqual(set(i.selected_tags), set(tags[::7]), i)
 
     def test_books_queryset_get(self):
         author = Author.objects.create(name="John Doe")
@@ -281,11 +281,11 @@ class PrefetchTests(TestCase):
 
         i = Author.objects.prefetch('books').get(pk=author.pk)
         self.assertTrue(hasattr(i, 'prefetched_books'))
-        self.assertEquals(len(i.books), 3, i.books)
+        self.assertEqual(len(i.books), 3, i.books)
 
         i = Author.objects.get(name="John Doe")
         self.assertFalse(hasattr(i, 'prefetched_books'))
-        self.assertEquals(len(i.books), 3, i.books)
+        self.assertEqual(len(i.books), 3, i.books)
 
     if VERSION >= (1, 2):
         def test_using_db(self):
@@ -295,19 +295,19 @@ class PrefetchTests(TestCase):
 
             for i in Author.objects.prefetch('books').filter(pk=author.pk).using('secondary'):
                 self.assertTrue(hasattr(i, 'prefetched_books'))
-                self.assertEquals(len(i.books), 3, i.books)
+                self.assertEqual(len(i.books), 3, i.books)
 
             for i in Author.objects.using('secondary').prefetch('books').filter(pk=author.pk):
                 self.assertTrue(hasattr(i, 'prefetched_books'))
-                self.assertEquals(len(i.books), 3, i.books)
+                self.assertEqual(len(i.books), 3, i.books)
 
             for i in Author.objects.db_manager('secondary').prefetch('books').filter(pk=author.pk):
                 self.assertTrue(hasattr(i, 'prefetched_books'))
-                self.assertEquals(len(i.books), 3, i.books)
+                self.assertEqual(len(i.books), 3, i.books)
 
             for i in Author.objects.filter(pk=author.pk).using('secondary'):
                 self.assertFalse(hasattr(i, 'prefetched_books'))
-                self.assertEquals(len(i.books), 3, i.books)
+                self.assertEqual(len(i.books), 3, i.books)
 
     def test_wrong_prefetch_subclass_and_instance(self):
         with self.assertRaises(InvalidPrefetch) as cm:
@@ -316,43 +316,43 @@ class PrefetchTests(TestCase):
                 )
 
 
-        self.assertEquals(cm.exception.args, ("Invalid prefetch definition latest_book_as_instance. This prefetcher needs to be a class not an instance.",))
+        self.assertEqual(cm.exception.args, ("Invalid prefetch definition latest_book_as_instance. This prefetcher needs to be a class not an instance.",))
 
     def test_wrong_prefetch_options_and_simple_prefetch(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Author.objects.prefetch(P('latest_book'))
-        self.assertEquals(1, len(cm.exception.args))
+        self.assertEqual(1, len(cm.exception.args))
         self.assertRegexpMatches(cm.exception.args[0], r"Invalid prefetch call with latest_book for on model <class 'test_app\.models\.Author'>. This prefetcher \(<prefetch\.Prefetcher object at 0x\w+>\) needs to be a subclass of Prefetcher\.")
 
     def test_wrong_prefetch_fwd(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Book.objects.prefetch('author__asdf')
 
-        self.assertEquals(cm.exception.args, ("Invalid part asdf in prefetch call for author__asdf on model <class 'test_app.models.Book'>. The name is not a prefetcher nor a forward relation (fk).",))
+        self.assertEqual(cm.exception.args, ("Invalid part asdf in prefetch call for author__asdf on model <class 'test_app.models.Book'>. The name is not a prefetcher nor a forward relation (fk).",))
 
     def test_wrong_prefetch_after_miss(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Book.objects.prefetch('author')
 
-        self.assertEquals(cm.exception.args, ("Invalid prefetch call with author for on model <class 'test_app.models.Book'>. The last part isn't a prefetch definition.",))
+        self.assertEqual(cm.exception.args, ("Invalid prefetch call with author for on model <class 'test_app.models.Book'>. The last part isn't a prefetch definition.",))
 
     def test_wrong_prefetch_after_wrong(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Author.objects.prefetch('books__asdf')
 
-        self.assertEquals(cm.exception.args, ("Invalid part asdf in prefetch call for books__asdf on model <class 'test_app.models.Author'>. You cannot have any more relations after the prefetcher.",))
+        self.assertEqual(cm.exception.args, ("Invalid part asdf in prefetch call for books__asdf on model <class 'test_app.models.Author'>. You cannot have any more relations after the prefetcher.",))
 
     def test_wrong_prefetch_fwd_no_manager(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Book.objects.prefetch('publisher__whatev')
 
-        self.assertEquals(cm.exception.args, ("Manager for <class 'test_app.models.Publisher'> is not a PrefetchManager instance.",))
+        self.assertEqual(cm.exception.args, ("Manager for <class 'test_app.models.Publisher'> is not a PrefetchManager instance.",))
 
     def test_wrong_prefetch(self):
         with self.assertRaises(InvalidPrefetch) as cm:
             Author.objects.prefetch('asdf')
 
-        self.assertEquals(cm.exception.args, ("Invalid part asdf in prefetch call for asdf on model <class 'test_app.models.Author'>. The name is not a prefetcher nor a forward relation (fk).",))
+        self.assertEqual(cm.exception.args, ("Invalid part asdf in prefetch call for asdf on model <class 'test_app.models.Author'>. The name is not a prefetcher nor a forward relation (fk).",))
 
     def test_wrong_definitions(self):
         class Bad1(Prefetcher):
