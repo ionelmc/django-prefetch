@@ -52,9 +52,7 @@ before_install:
     sudo pip install tox
 script: tox -v -e $TRAVIS_PYTHON_VERSION-$DJANGO_VERSION
 after_success:
-  - coverage combine || true
-  - coverage report --show-missing --include='src/*' || true
-  - coveralls || true
+  - .tox/$TRAVIS_PYTHON_VERSION-$DJANGO_VERSION/bin/coveralls
 notifications:
   email:
     on_success: never

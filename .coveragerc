@@ -1,3 +1,3 @@
 [run]
-source = src
+source = prefetch
 omit = *migrations*
