@@ -35,6 +35,8 @@ matrix:
       python: 3.3
     - env: DJANGO_VERSION=1.4
       python: 3.2
+    - env: DJANGO_VERSION=trunk
+      python: 2.6
 before_install:
   - |
     deactivate
