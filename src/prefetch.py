@@ -60,11 +60,11 @@ P = PrefetchOption
 
 class PrefetchQuerySet(query.QuerySet):
     def __init__(self, model=None, query=None, using=None,
-                 prefetch_definitions=None):
+                 prefetch_definitions=None, **kwargs):
         if using is None: # this is to support Django 1.1
-            super(PrefetchQuerySet, self).__init__(model, query)
+            super(PrefetchQuerySet, self).__init__(model, query, **kwargs)
         else:
-            super(PrefetchQuerySet, self).__init__(model, query, using)
+            super(PrefetchQuerySet, self).__init__(model, query, using, **kwargs)
         self._prefetch = {}
         self.prefetch_definitions = prefetch_definitions
 
