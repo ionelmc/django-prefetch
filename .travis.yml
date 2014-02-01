@@ -16,7 +16,7 @@ env:
     - DJANGO_VERSION=1.4
     - DJANGO_VERSION=1.5
     - DJANGO_VERSION=1.6
-    - DJANGO_VERSION=trunk
+    - DJANGO_VERSION=1.7
 matrix:
   allow_failures:
     - env: DJANGO_VERSION=1.1
@@ -35,7 +35,7 @@ matrix:
       python: 3.3
     - env: DJANGO_VERSION=1.4
       python: 3.2
-    - env: DJANGO_VERSION=trunk
+    - env: DJANGO_VERSION=1.7
       python: 2.6
 before_install:
   - |
