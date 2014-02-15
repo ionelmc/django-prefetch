@@ -43,8 +43,9 @@ manager).
 Requirements
 ============
 
-The project has been tested on Django 1.1, 1.2, 1.3, 1.4 and trunk with Python
-2.6 and 2.7.
+:OS: Any
+:Runtime: Python 2.6, 2.7, 3.2, 3.3 or PyPy
+:Packages: Django>=1.1 (including 1.7)
 
 Example
 =======
@@ -147,4 +148,3 @@ Check out the tests for more examples.
 .. image:: https://d2weczhvl823v0.cloudfront.net/ionelmc/django-prefetch/trend.png
    :alt: Bitdeli badge
    :target: https://bitdeli.com/free
-
