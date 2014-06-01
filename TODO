@@ -1,5 +1,0 @@
-TODO
-====
-
- * document ``collect`` option of ``Prefetcher``
- * create tests covering custom ``collect`` and ``mapper``

@@ -1,3 +1,11 @@
+[paths]
+source = src
+
 [run]
-source = prefetch
+source = src
+parallel = true
 omit = *migrations*
+
+[report]
+show_missing = true
+precision = 2

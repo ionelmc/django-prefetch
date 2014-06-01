@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="django-prefetch",
-    version="0.2",
+    version="0.2.0",
     url='https://github.com/ionelmc/django-prefetch',
     download_url='',
     license='BSD',

@@ -2,15 +2,19 @@
     django-prefetch
 ===========================
 
-.. image:: https://secure.travis-ci.org/ionelmc/django-prefetch.png
+.. image:: http://img.shields.io/travis/ionelmc/django-prefetch/master.png
     :alt: Build Status
-    :target: http://travis-ci.org/ionelmc/django-prefetch
+    :target: https://travis-ci.org/ionelmc/django-prefetch
 
-.. image:: https://coveralls.io/repos/ionelmc/django-prefetch/badge.png?branch=master
+.. image:: http://img.shields.io/coveralls/ionelmc/django-prefetch/master.png
     :alt: Coverage Status
     :target: https://coveralls.io/r/ionelmc/django-prefetch
 
-.. image:: https://badge.fury.io/py/django-prefetch.png
+.. image:: http://img.shields.io/pypi/v/django-prefetch.png
+    :alt: PYPI Package
+    :target: https://pypi.python.org/pypi/django-prefetch
+
+.. image:: http://img.shields.io/pypi/dm/django-prefetch.png
     :alt: PYPI Package
     :target: https://pypi.python.org/pypi/django-prefetch
 
@@ -144,7 +148,8 @@ Other examples
 
 Check out the tests for more examples.
 
+TODO
+====
 
-.. image:: https://d2weczhvl823v0.cloudfront.net/ionelmc/django-prefetch/trend.png
-   :alt: Bitdeli badge
-   :target: https://bitdeli.com/free
+* document ``collect`` option of ``Prefetcher``
+* create tests covering custom ``collect`` and ``mapper``
