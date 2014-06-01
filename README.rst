@@ -1,5 +1,5 @@
 ===========================
-    django-prefetch
+      django-prefetch
 ===========================
 
 .. image:: http://img.shields.io/travis/ionelmc/django-prefetch/master.png
@@ -151,5 +151,5 @@ Check out the tests for more examples.
 TODO
 ====
 
-* document ``collect`` option of ``Prefetcher``
-* create tests covering custom ``collect`` and ``mapper``
+* Document ``collect`` option of ``Prefetcher``
+* Create tests covering custom ``collect`` and ``mapper``

@@ -8,6 +8,7 @@ from django.db import models
 from django.db.models import query
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 
+
 class PrefetchManagerMixin(models.Manager):
     use_for_related_fields = True
     prefetch_definitions = {}
@@ -47,8 +48,10 @@ class PrefetchManager(PrefetchManagerMixin):
         self.prefetch_definitions = kwargs
         super(PrefetchManager, self).__init__()
 
+
 class InvalidPrefetch(Exception):
     pass
+
 
 class PrefetchOption(object):
     def __init__(self, name, *args, **kwargs):
@@ -58,10 +61,11 @@ class PrefetchOption(object):
 
 P = PrefetchOption
 
+
 class PrefetchQuerySet(query.QuerySet):
     def __init__(self, model=None, query=None, using=None,
                  prefetch_definitions=None, **kwargs):
-        if using is None: # this is to support Django 1.1
+        if using is None:  # this is to support Django 1.1
             super(PrefetchQuerySet, self).__init__(model, query, **kwargs)
         else:
             super(PrefetchQuerySet, self).__init__(model, query, using, **kwargs)
@@ -115,7 +119,6 @@ class PrefetchQuerySet(query.QuerySet):
             else:
                 obj._prefetch[name] = forwarders, prefetcher if prefetcher.__class__ is Prefetcher else prefetcher()
 
-
         for forwarders, prefetcher in obj._prefetch.values():
             if forwarders:
                 obj = obj.select_related('__'.join(forwarders))
@@ -127,6 +130,7 @@ class PrefetchQuerySet(query.QuerySet):
             prefetcher.fetch(data, name, self.model, forwarders,
                              getattr(self, '_db', None))
         return iter(data)
+
 
 class Prefetcher(object):
     """
