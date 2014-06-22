@@ -8,6 +8,8 @@ from django.db import models
 from django.db.models import query
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 
+__version__ = '0.2.0'
+
 
 class PrefetchManagerMixin(models.Manager):
     use_for_related_fields = True
@@ -106,14 +108,21 @@ class PrefetchQuerySet(query.QuerySet):
                             raise InvalidPrefetch('Manager for %s is not a PrefetchManager instance.' % model)
                         prefetch_definitions = manager.prefetch_definitions
                     else:
-                        raise InvalidPrefetch("Invalid part %s in prefetch call for %s on model %s. The name is not a prefetcher nor a forward relation (fk)." % (what, name, self.model))
+                        raise InvalidPrefetch("Invalid part %s in prefetch call for %s on model %s. "
+                                              "The name is not a prefetcher nor a forward relation (fk)." % (
+                                                  what, name, self.model))
                 else:
-                    raise InvalidPrefetch("Invalid part %s in prefetch call for %s on model %s. You cannot have any more relations after the prefetcher." % (what, name, self.model))
+                    raise InvalidPrefetch("Invalid part %s in prefetch call for %s on model %s. "
+                                          "You cannot have any more relations after the prefetcher." % (
+                                              what, name, self.model))
             if not prefetcher:
-                raise InvalidPrefetch("Invalid prefetch call with %s for on model %s. The last part isn't a prefetch definition." % (name, self.model))
+                raise InvalidPrefetch("Invalid prefetch call with %s for on model %s. "
+                                      "The last part isn't a prefetch definition." % (name, self.model))
             if opt:
                 if prefetcher.__class__ is Prefetcher:
-                    raise InvalidPrefetch("Invalid prefetch call with %s for on model %s. This prefetcher (%s) needs to be a subclass of Prefetcher." % (name, self.model, prefetcher))
+                    raise InvalidPrefetch("Invalid prefetch call with %s for on model %s. "
+                                          "This prefetcher (%s) needs to be a subclass of Prefetcher." % (
+                                              name, self.model, prefetcher))
 
                 obj._prefetch[name] = forwarders, prefetcher(*opt.args, **opt.kwargs)
             else:
@@ -159,7 +168,9 @@ class Prefetcher(object):
         Prefetcher(
             filter = lambda ids: User.groups.through.objects.filter(user__in=ids).select_related('group'),
             reverse_mapper = lambda user_group_association: [user_group_association.user_id],
-            decorator = lambda user, user_group_associations=(): setattr(user, 'prefetched_groups', [i.group for i in user_group_associations])
+            decorator = lambda user, user_group_associations=(): setattr(user, 'prefetched_groups', [
+                i.group for i in user_group_associations
+            ])
         )
 
 
@@ -238,14 +249,16 @@ class Prefetcher(object):
                 self.decorator(obj)
 
             t2 = time.time()
-            logger.debug("Creating data_mapping for %s query took %.3f secs for the %s prefetcher.", model.__name__, t2-t1, name)
+            logger.debug("Creating data_mapping for %s query took %.3f secs for the %s prefetcher.",
+                         model.__name__, t2-t1, name)
             t1 = time.time()
             related_data = self.filter(data_mapping.keys())
             if db is not None:
                 related_data = related_data.using(db)
             related_data_len = len(related_data)
             t2 = time.time()
-            logger.debug("Filtering for %s related objects for %s query took %.3f secs for the %s prefetcher.", related_data_len, model.__name__, t2-t1, name)
+            logger.debug("Filtering for %s related objects for %s query took %.3f secs for the %s prefetcher.",
+                         related_data_len, model.__name__, t2-t1, name)
             relation_mapping = collections.defaultdict(list)
 
             t1 = time.time()
@@ -262,7 +275,8 @@ class Prefetcher(object):
                         self.decorator(data_mapping[id_], related_items)
 
             t2 = time.time()
-            logger.debug("Adding the related objects on the %s query took %.3f secs for the %s prefetcher.", model.__name__, t2-t1, name)
+            logger.debug("Adding the related objects on the %s query took %.3f secs for the %s prefetcher.",
+                         model.__name__, t2-t1, name)
             return dataset
         except Exception:
             logger.exception("Prefetch failed for %s prefetch on the %s model:", name, model.__name__)
