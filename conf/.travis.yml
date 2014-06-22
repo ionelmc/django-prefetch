@@ -5,12 +5,15 @@ env:
   global:
     LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
   matrix:
-{% for env, config in matrix|dictsort %}
+    - TOXENV=check
+{% for env, config in tox_environments|dictsort %}
     - TOXENV={{ env }}{% if config.cover %},coveralls{% endif %}
 
 {% endfor %}
 before_install:
   - python --version
+  - virtualenv --version
+  - pip --version
   - uname -a
   - lsb_release -a
 install:
