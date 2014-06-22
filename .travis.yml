@@ -6,10 +6,6 @@ env:
     LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
   matrix:
     - TOXENV=check
-    - TOXENV=2.6-1.1,coveralls
-    - TOXENV=2.6-1.1-nocover
-    - TOXENV=2.6-1.2,coveralls
-    - TOXENV=2.6-1.2-nocover
     - TOXENV=2.6-1.3,coveralls
     - TOXENV=2.6-1.3-nocover
     - TOXENV=2.6-1.4,coveralls
@@ -18,10 +14,6 @@ env:
     - TOXENV=2.6-1.5-nocover
     - TOXENV=2.6-1.6,coveralls
     - TOXENV=2.6-1.6-nocover
-    - TOXENV=2.7-1.1,coveralls
-    - TOXENV=2.7-1.1-nocover
-    - TOXENV=2.7-1.2,coveralls
-    - TOXENV=2.7-1.2-nocover
     - TOXENV=2.7-1.3,coveralls
     - TOXENV=2.7-1.3-nocover
     - TOXENV=2.7-1.4,coveralls
@@ -44,10 +36,6 @@ env:
     - TOXENV=3.4-1.6-nocover
     - TOXENV=3.4-1.7,coveralls
     - TOXENV=3.4-1.7-nocover
-    - TOXENV=pypy-1.1,coveralls
-    - TOXENV=pypy-1.1-nocover
-    - TOXENV=pypy-1.2,coveralls
-    - TOXENV=pypy-1.2-nocover
     - TOXENV=pypy-1.3,coveralls
     - TOXENV=pypy-1.3-nocover
     - TOXENV=pypy-1.4,coveralls

@@ -3,10 +3,6 @@ build: false
 environment:
   matrix:
     - TOXENV: check
-    - TOXENV: "2.7-1.1"
-    - TOXENV: "2.7-1.1-nocover"
-    - TOXENV: "2.7-1.2"
-    - TOXENV: "2.7-1.2-nocover"
     - TOXENV: "2.7-1.3"
     - TOXENV: "2.7-1.3-nocover"
     - TOXENV: "2.7-1.4"
