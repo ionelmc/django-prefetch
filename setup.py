@@ -1,7 +1,6 @@
 # -*- encoding: utf8 -*-
 import glob
 import io
-import re
 from os.path import basename
 from os.path import dirname
 from os.path import join
@@ -27,6 +26,7 @@ setup(
     long_description=read('README.rst'),
     author='Ionel Cristian Mărieș',
     author_email='contact@ionelmc.ro',
+    packages=find_packages("src"),
     package_dir={"": "src"},
     py_modules=[splitext(basename(i))[0] for i in glob.glob("src/*.py")],
     include_package_data=True,

@@ -6,8 +6,6 @@
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/ionelmc/django-prefetch
 
-.. See: http://www.appveyor.com/docs/status-badges
-
 .. image:: https://ci.appveyor.com/api/projects/status/qg7n1s6urm9q11i3/branch/master
     :alt: AppVeyor Build Status
     :target: https://ci.appveyor.com/project/ionelmc/django-prefetch
