@@ -112,7 +112,7 @@ class Book(models.Model):
 
     objects = PrefetchManager(
         tags = Prefetcher(
-            filter = lambda ids: (Book_Tag if VERSION < (1, 2) else Book.tags.through).objects.filter(book__in=ids),
+            filter = lambda ids: (Book_Tag if VERSION < (1, 2) else Book.tags.through).objects.select_related('tag').filter(book__in=ids),
             reverse_mapper = lambda book_tag: [book_tag.book_id],
             decorator = lambda user, book_tags=():
                 setattr(user, 'prefetched_tags', [i.tag for i in book_tags])

@@ -1,16 +1,22 @@
 import logging
 import logging.handlers
-
+import re
 import time
 
 from django import VERSION
 from django.test import TestCase
+from prefetch import InvalidPrefetch
+from prefetch import P
+from prefetch import Prefetcher
+from prefetch import PrefetchManager
 
-import time
-import re
+from .models import Author
+from .models import Book
+from .models import BookNote
+from .models import LatestBook
+from .models import SillyException
+from .models import Tag
 
-from .models import Book, Author, Tag, BookNote, SillyException, LatestBook
-from prefetch import InvalidPrefetch, Prefetcher, P, PrefetchManager
 
 class AssertingHandler(logging.handlers.BufferingHandler):
 
@@ -189,10 +195,11 @@ class PrefetchTests(TestCase):
             for j in range(3):
                 BookNote.objects.create(notes="Note %s/%s" % (i, j), book=book)
 
-        for note in BookNote.objects.select_related("book").prefetch("book__tags"):
-            self.assertTrue(hasattr(note.book, 'prefetched_tags'))
-            self.assertEqual(len(note.book.selected_tags), 15, i)
-            self.assertEqual(set(note.book.selected_tags), set(tags[::7]), i)
+        with self.assertNumQueries(2):
+            for note in BookNote.objects.select_related("book").prefetch("book__tags"):
+                self.assertTrue(hasattr(note.book, 'prefetched_tags'))
+                self.assertEqual(len(note.book.selected_tags), 15, i)
+                self.assertEqual(set(note.book.selected_tags), set(tags[::7]), i)
 
         for note in BookNote.objects.select_related("book"):
             self.assertFalse(hasattr(note.book, 'prefetched_tags'))
