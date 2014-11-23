@@ -193,13 +193,14 @@ class PrefetchTests(TestCase):
                 book.tags.add(*tags[::7])
 
             for j in range(3):
-                BookNote.objects.create(notes="Note %s/%s" % (i, j), book=book)
+                BookNote.objects.create(notes="Note %s/%s" % (i, j), book=book, bogus=book)
 
         with self.assertNumQueries(2):
-            for note in BookNote.objects.select_related("book").prefetch("book__tags"):
+            for note in BookNote.objects.select_related("book", "bogus").prefetch("book__tags"):
                 self.assertTrue(hasattr(note.book, 'prefetched_tags'))
                 self.assertEqual(len(note.book.selected_tags), 15, i)
                 self.assertEqual(set(note.book.selected_tags), set(tags[::7]), i)
+                self.assertTrue(isinstance(note.bogus, Book))
 
         for note in BookNote.objects.select_related("book"):
             self.assertFalse(hasattr(note.book, 'prefetched_tags'))

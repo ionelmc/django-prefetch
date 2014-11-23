@@ -4,6 +4,7 @@ logger = getLogger(__name__)
 import time
 import collections
 
+import django
 from django.db import models
 from django.db.models import query
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
@@ -130,7 +131,11 @@ class PrefetchQuerySet(query.QuerySet):
 
         for forwarders, prefetcher in obj._prefetch.values():
             if forwarders:
-                obj = obj.select_related('__'.join(forwarders))
+                if django.VERSION < (1, 7) and obj.query.select_related:
+                    if not obj.query.max_depth:
+                        obj.query.add_select_related('__'.join(forwarders))
+                else:
+                    obj = obj.select_related('__'.join(forwarders))
         return obj
 
     def iterator(self):

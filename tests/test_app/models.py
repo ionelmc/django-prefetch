@@ -154,6 +154,7 @@ class Book(models.Model):
 
 class BookNote(models.Model):
     book = models.ForeignKey("Book", null=True)
+    bogus = models.ForeignKey("Book", null=True, related_name="+")
     notes = models.TextField()
 
     objects = PrefetchManager()
