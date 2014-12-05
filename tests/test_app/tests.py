@@ -150,6 +150,9 @@ class PrefetchTests(TestCase):
                 ["Book 29", "Book 28", "Book 27", "Book 26", "Book 25"]
             )
 
+    def test_clone(self):
+        Author.objects.all()._clone()
+
     def test_latest_book(self):
         author1 = Author.objects.create(name="Johnny")
         author2 = Author.objects.create(name="Johnny")
@@ -319,10 +322,9 @@ class PrefetchTests(TestCase):
 
     def test_wrong_prefetch_subclass_and_instance(self):
         with self.assertRaises(InvalidPrefetch) as cm:
-                objects = PrefetchManager(
-                    latest_book_as_instance = LatestBook(),
-                )
-
+            objects = PrefetchManager(
+                latest_book_as_instance=LatestBook(),
+            )
 
         self.assertEqual(cm.exception.args, ("Invalid prefetch definition latest_book_as_instance. This prefetcher needs to be a class not an instance.",))
 
