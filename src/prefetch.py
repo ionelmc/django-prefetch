@@ -9,7 +9,7 @@ from django.db import models
 from django.db.models import query
 from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
 
-__version__ = '0.2.0'
+__version__ = '1.0.0'
 
 
 class PrefetchManagerMixin(models.Manager):

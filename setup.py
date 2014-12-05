@@ -18,7 +18,7 @@ def read(*names, **kwargs):
 
 setup(
     name="django-prefetch",
-    version="0.2.0",
+    version="1.0.0",
     url='https://github.com/ionelmc/django-prefetch',
     download_url='',
     license='BSD',
