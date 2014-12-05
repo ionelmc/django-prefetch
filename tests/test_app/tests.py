@@ -2,6 +2,7 @@ import logging
 import logging.handlers
 import re
 import time
+import warnings
 
 from django import VERSION
 from django.test import TestCase
@@ -65,6 +66,15 @@ class _AssertRaisesContext(object):
         return True
 
 class PrefetchTests(TestCase):
+
+    def setUp(self):
+        super(PrefetchTests, self).setUp()
+        warnings.simplefilter('error')
+
+    def tearDown(self):
+        super(PrefetchTests, self).tearDown()
+        warnings.resetwarnings()
+
     def assertRegexpMatches(self, text, expected_regexp, msg=None):
         """Fail the test unless the text matches the regular expression."""
         if isinstance(expected_regexp, str):
