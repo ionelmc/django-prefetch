@@ -2,10 +2,9 @@
 import os
 import sys
 if not os.path.exists('.tox/configure'):
-    import virtualenv
     import subprocess
     print("Bootstrapping ...")
-    virtualenv.create_environment('.tox/configure')
+    subprocess.check_call(['virtualenv', '.tox/configure'])
     print("Installing `jinja2` and `matrix` into bootstrap environment ...")
     if sys.platform == 'win32':
         subprocess.check_call(['.tox/configure/Scripts/pip', 'install', 'jinja2', 'matrix'])
