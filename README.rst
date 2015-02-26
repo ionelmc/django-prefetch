@@ -2,25 +2,52 @@
       django-prefetch
 ===========================
 
-.. image:: http://img.shields.io/travis/ionelmc/django-prefetch/master.png
+| |docs| |travis| |appveyor| |coveralls| |landscape| |scrutinizer|
+| |version| |downloads| |wheel| |supported-versions| |supported-implementations|
+
+.. |docs| image:: https://readthedocs.org/projects/django-prefetch/badge/?style=flat
+    :target: https://readthedocs.org/projects/django-prefetch
+    :alt: Documentation Status
+
+.. |travis| image:: http://img.shields.io/travis/ionelmc/django-prefetch/master.png?style=flat
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/ionelmc/django-prefetch
 
-.. image:: https://ci.appveyor.com/api/projects/status/qg7n1s6urm9q11i3/branch/master
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/ionelmc/django-prefetch?branch=master
     :alt: AppVeyor Build Status
     :target: https://ci.appveyor.com/project/ionelmc/django-prefetch
 
-.. image:: http://img.shields.io/coveralls/ionelmc/django-prefetch/master.png
+.. |coveralls| image:: http://img.shields.io/coveralls/ionelmc/django-prefetch/master.png?style=flat
     :alt: Coverage Status
     :target: https://coveralls.io/r/ionelmc/django-prefetch
 
-.. image:: http://img.shields.io/pypi/v/django-prefetch.png
-    :alt: PYPI Package
+.. |landscape| image:: https://landscape.io/github/ionelmc/django-prefetch/master/landscape.svg?style=flat
+    :target: https://landscape.io/github/ionelmc/django-prefetch/master
+    :alt: Code Quality Status
+
+.. |version| image:: http://img.shields.io/pypi/v/django-prefetch.png?style=flat
+    :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. image:: http://img.shields.io/pypi/dm/django-prefetch.png
-    :alt: PYPI Package
+.. |downloads| image:: http://img.shields.io/pypi/dm/django-prefetch.png?style=flat
+    :alt: PyPI Package monthly downloads
     :target: https://pypi.python.org/pypi/django-prefetch
+
+.. |wheel| image:: https://pypip.in/wheel/django-prefetch/badge.png?style=flat
+    :alt: PyPI Wheel
+    :target: https://pypi.python.org/pypi/django-prefetch
+
+.. |supported-versions| image:: https://pypip.in/py_versions/django-prefetch/badge.png?style=flat
+    :alt: Supported versions
+    :target: https://pypi.python.org/pypi/django-prefetch
+
+.. |supported-implementations| image:: https://pypip.in/implementation/django-prefetch/badge.png?style=flat
+    :alt: Supported imlementations
+    :target: https://pypi.python.org/pypi/django-prefetch
+
+.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/django-prefetch/master.png?style=flat
+    :alt: Scrtinizer Status
+    :target: https://scrutinizer-ci.com/g/ionelmc/django-prefetch/
 
 Simple and generic model related data prefetch framework for Django solving the
 "1+N queries" problem that happens when you need related data for your objects.
