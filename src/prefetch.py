@@ -105,8 +105,8 @@ class PrefetchQuerySet(query.QuerySet):
                         forwarders.append(descriptor.field.name)
                         model = descriptor.field.rel.to
                         manager = model.objects
-                        if not isinstance(manager, PrefetchManager):
-                            raise InvalidPrefetch('Manager for %s is not a PrefetchManager instance.' % model)
+                        if not isinstance(manager, PrefetchManagerMixin):
+                            raise InvalidPrefetch('Manager for %s is not a PrefetchManagerMixin instance.' % model)
                         prefetch_definitions = manager.prefetch_definitions
                     else:
                         raise InvalidPrefetch("Invalid part %s in prefetch call for %s on model %s. "
