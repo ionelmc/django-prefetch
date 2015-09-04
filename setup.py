@@ -24,7 +24,7 @@ def read(*names, **kwargs):
 
 setup(
     name='django-prefetch',
-    version='1.0.0',
+    version='1.0.1',
     license='BSD',
     description='Generic model related data prefetch framework for Django.',
     long_description=read('README.rst'),
