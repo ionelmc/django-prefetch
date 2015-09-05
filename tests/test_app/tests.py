@@ -366,7 +366,7 @@ class PrefetchTests(TestCase):
         with self.assertRaises(InvalidPrefetch) as cm:
             Book.objects.prefetch('publisher__whatev')
 
-        self.assertEqual(cm.exception.args, ("Manager for <class 'test_app.models.Publisher'> is not a PrefetchManager instance.",))
+        self.assertEqual(cm.exception.args, ("Manager for <class 'test_app.models.Publisher'> is not a PrefetchManagerMixin instance.",))
 
     def test_wrong_prefetch(self):
         with self.assertRaises(InvalidPrefetch) as cm:
