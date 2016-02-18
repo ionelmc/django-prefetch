@@ -78,9 +78,9 @@ class PrefetchQuerySet(query.QuerySet):
         self._prefetch = {}
         self.prefetch_definitions = prefetch_definitions
 
-    def _clone(self, klass=None, setup=False, **kwargs):
+    def _clone(self, **kwargs):
         return super(PrefetchQuerySet, self). \
-            _clone(klass, setup, _prefetch=self._prefetch,
+            _clone(_prefetch=self._prefetch,
                    prefetch_definitions=self.prefetch_definitions, **kwargs)
 
     def prefetch(self, *names):
