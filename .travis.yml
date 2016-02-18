@@ -48,6 +48,8 @@ env:
     - TOXENV=pypy-1.7-nocover
     - TOXENV=pypy-1.8,coveralls
     - TOXENV=pypy-1.8-nocover
+    - TOXENV=pypy-1.9,coveralls
+    - TOXENV=pypy-1.9-nocover
 before_install:
   - python --version
   - virtualenv --version
