@@ -5,7 +5,10 @@ import collections
 import django
 from django.db import models
 from django.db.models import query
-from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor
+try:
+    from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor as ForwardManyToOneDescriptor
+except ImportError:
+    from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
 
 __version__ = '1.0.1'
 
@@ -101,7 +104,7 @@ class PrefetchQuerySet(query.QuerySet):
                         prefetcher = prefetch_definitions[what]
                         continue
                     descriptor = getattr(model, what, None)
-                    if isinstance(descriptor, ReverseSingleRelatedObjectDescriptor):
+                    if isinstance(descriptor, ForwardManyToOneDescriptor):
                         forwarders.append(descriptor.field.name)
                         model = descriptor.field.rel.to
                         manager = model.objects
