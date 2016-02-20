@@ -1,56 +1,86 @@
-===========================
-      django-prefetch
-===========================
+========
+Overview
+========
 
-| |docs| |travis| |appveyor| |coveralls| |landscape| |scrutinizer|
-| |version| |downloads| |wheel| |supported-versions| |supported-implementations|
+.. start-badges
+
+.. list-table::
+    :stub-columns: 1
+
+    * - docs
+      - |docs|
+    * - tests
+      - | |travis| |appveyor| |requires|
+        | |coveralls| |codecov|
+        | |landscape| |scrutinizer| |codacy| |codeclimate|
+    * - package
+      - |version| |downloads| |wheel| |supported-versions| |supported-implementations|
 
 .. |docs| image:: https://readthedocs.org/projects/django-prefetch/badge/?style=flat
     :target: https://readthedocs.org/projects/django-prefetch
     :alt: Documentation Status
 
-.. |travis| image:: http://img.shields.io/travis/ionelmc/django-prefetch/master.png?style=flat
+.. |travis| image:: https://travis-ci.org/ionelmc/django-prefetch.svg?branch=master
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/ionelmc/django-prefetch
 
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/ionelmc/django-prefetch?branch=master
+.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/ionelmc/django-prefetch?branch=master&svg=true
     :alt: AppVeyor Build Status
     :target: https://ci.appveyor.com/project/ionelmc/django-prefetch
 
-.. |coveralls| image:: http://img.shields.io/coveralls/ionelmc/django-prefetch/master.png?style=flat
+.. |requires| image:: https://requires.io/github/ionelmc/django-prefetch/requirements.svg?branch=master
+    :alt: Requirements Status
+    :target: https://requires.io/github/ionelmc/django-prefetch/requirements/?branch=master
+
+.. |coveralls| image:: https://coveralls.io/repos/ionelmc/django-prefetch/badge.svg?branch=master&service=github
     :alt: Coverage Status
     :target: https://coveralls.io/r/ionelmc/django-prefetch
+
+.. |codecov| image:: https://codecov.io/github/ionelmc/django-prefetch/coverage.svg?branch=master
+    :alt: Coverage Status
+    :target: https://codecov.io/github/ionelmc/django-prefetch
 
 .. |landscape| image:: https://landscape.io/github/ionelmc/django-prefetch/master/landscape.svg?style=flat
     :target: https://landscape.io/github/ionelmc/django-prefetch/master
     :alt: Code Quality Status
 
-.. |version| image:: http://img.shields.io/pypi/v/django-prefetch.png?style=flat
+.. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg?style=flat
+    :target: https://www.codacy.com/app/ionelmc/django-prefetch
+    :alt: Codacy Code Quality Status
+
+.. |codeclimate| image:: https://codeclimate.com/github/ionelmc/django-prefetch/badges/gpa.svg
+   :target: https://codeclimate.com/github/ionelmc/django-prefetch
+   :alt: CodeClimate Quality Status
+
+.. |version| image:: https://img.shields.io/pypi/v/django-prefetch.svg?style=flat
     :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |downloads| image:: http://img.shields.io/pypi/dm/django-prefetch.png?style=flat
+.. |downloads| image:: https://img.shields.io/pypi/dm/django-prefetch.svg?style=flat
     :alt: PyPI Package monthly downloads
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |wheel| image:: https://pypip.in/wheel/django-prefetch/badge.png?style=flat
+.. |wheel| image:: https://img.shields.io/pypi/wheel/django-prefetch.svg?style=flat
     :alt: PyPI Wheel
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |supported-versions| image:: https://pypip.in/py_versions/django-prefetch/badge.png?style=flat
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/django-prefetch.svg?style=flat
     :alt: Supported versions
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |supported-implementations| image:: https://pypip.in/implementation/django-prefetch/badge.png?style=flat
-    :alt: Supported imlementations
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/django-prefetch.svg?style=flat
+    :alt: Supported implementations
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/django-prefetch/master.png?style=flat
-    :alt: Scrtinizer Status
+.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/django-prefetch/master.svg?style=flat
+    :alt: Scrutinizer Status
     :target: https://scrutinizer-ci.com/g/ionelmc/django-prefetch/
 
-Simple and generic model related data prefetch framework for Django solving the
-"1+N queries" problem that happens when you need related data for your objects.
+
+.. end-badges
+
+Simple and generic model related data prefetch framework for Django solving the "1+N queries" problem that happens when
+you need related data for your objects.
 
 In most of the cases you'll have forward relations (foreign keys to something)
 and can use select_related to fetch that data on the same query. However, in
@@ -62,6 +92,8 @@ flexibility than Django 1.4's prefetch_related_ queryset method at the cost
 of writting the mapping and query functions for the data. This has the advantage
 that you can do things prefetch_related_ cannot (see the latest_book example_
 bellow).
+
+* Free software: BSD license
 
 .. _prefetch_related: https://docs.djangoproject.com/en/dev/ref/models/querysets/#prefetch-related
 
