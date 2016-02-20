@@ -44,7 +44,7 @@ Overview
     :target: https://landscape.io/github/ionelmc/django-prefetch/master
     :alt: Code Quality Status
 
-.. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg?style=flat
+.. |codacy| image:: https://img.shields.io/codacy/dd58a26620d04bcfa245c7bd74aa0831.svg?style=flat
     :target: https://www.codacy.com/app/ionelmc/django-prefetch
     :alt: Codacy Code Quality Status
 
