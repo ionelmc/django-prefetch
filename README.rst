@@ -111,8 +111,8 @@ Requirements
 ============
 
 :OS: Any
-:Runtime: Python 2.6, 2.7, 3.2, 3.3 or PyPy
-:Packages: Django>=1.1 (including 1.7)
+:Runtime: Python 2.6, 2.7, 3.2+ or PyPy
+:Packages: Django>=1.1
 
 Example
 =======
