@@ -105,8 +105,12 @@ class PrefetchQuerySet(query.QuerySet):
                         continue
                     descriptor = getattr(model, what, None)
                     if isinstance(descriptor, ForwardManyToOneDescriptor):
-                        forwarders.append(descriptor.field.name)
-                        model = descriptor.field.rel.to
+                        field = descriptor.field
+                        forwarders.append(field.name)
+                        if hasattr(field, 'remote_field'):
+                            model = field.remote_field.model
+                        else:
+                            model = field.rel.to
                         manager = model.objects
                         if not isinstance(manager, PrefetchManagerMixin):
                             raise InvalidPrefetch('Manager for %s is not a PrefetchManagerMixin instance.' % model)
