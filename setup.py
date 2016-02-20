@@ -25,7 +25,8 @@ setup(
     name='django-prefetch',
     version='1.0.1',
     license='BSD',
-    description='Simple and generic model related data prefetch framework for Django solving the "1+N queries" problem that happens when you need related data for your objects.',
+    description='Simple and generic model related data prefetch framework for Django solving the '
+                '"1+N queries" problem that happens when you need related data for your objects.',
     long_description='%s\n%s' % (
         re.compile('^.. start-badges.*^.. end-badges', re.M | re.S).sub('', read('README.rst')),
         re.sub(':[a-z]+:`~?(.*?)`', r'``\1``', read('CHANGELOG.rst'))
