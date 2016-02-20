@@ -23,7 +23,7 @@ def read(*names, **kwargs):
 
 setup(
     name='django-prefetch',
-    version='1.0.1',
+    version='1.1.0',
     license='BSD',
     description='Simple and generic model related data prefetch framework for Django solving the '
                 '"1+N queries" problem that happens when you need related data for your objects.',

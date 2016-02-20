@@ -10,7 +10,7 @@ try:
 except ImportError:
     from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
 
-__version__ = '1.0.1'
+__version__ = '1.1.0'
 
 logger = getLogger(__name__)
 
