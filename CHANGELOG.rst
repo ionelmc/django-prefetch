@@ -7,6 +7,7 @@ Changelog
 
 * Fixed a test assertion. Contributed by George Ma in `#12 <https://github.com/ionelmc/django-prefetch/pull/12>`_.
 * Added support for Django 1.9. Contributed by Will Stott in `#14 <https://github.com/ionelmc/django-prefetch/pull/14>`_.
+* Fixed use of deprecated `field.rel.to` momdel API (Django 1.9+).
 
 1.0.1 (2015-09-05)
 ------------------
