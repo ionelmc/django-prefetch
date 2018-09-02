@@ -1,17 +1,21 @@
-from django import VERSION
 from django.db import models
 from prefetch import PrefetchManager, Prefetcher
+
 
 class SillyException(Exception):
     pass
 
+
 class SillyPrefetcher(Prefetcher):
     def filter(ids):
         raise SillyException()
+
     def reverse_mapper(book):
         raise SillyException()
+
     def decorator(author, books=()):
         raise SillyException()
+
 
 class LatestNBooks(Prefetcher):
     def __init__(self, count=2):
@@ -29,6 +33,7 @@ class LatestNBooks(Prefetcher):
                 'prefetched_latest_%s_books' % self.count,
                 books[:self.count])
 
+
 class LatestBook(Prefetcher):
     def filter(self, ids):
         return Book.objects.filter(author__in=ids)
@@ -43,29 +48,30 @@ class LatestBook(Prefetcher):
             max(books, key=lambda book: book.created) if books else None
         )
 
+
 class Author(models.Model):
     name = models.CharField(max_length=100)
 
     objects = PrefetchManager(
-        books = Prefetcher(
-            filter = lambda ids: Book.objects.filter(author__in=ids),
-            mapper = lambda author: author.id,
-            reverse_mapper = lambda book: [book.author_id],
-            decorator = lambda author, books=():
+        books=Prefetcher(
+            filter=lambda ids: Book.objects.filter(author__in=ids),
+            mapper=lambda author: author.id,
+            reverse_mapper=lambda book: [book.author_id],
+            decorator=lambda author, books=():
                 setattr(author, 'prefetched_books', books)
         ),
-        latest_n_books = LatestNBooks,
-        latest_book_as_class = LatestBook,
-        latest_book = Prefetcher(
-            filter = lambda ids: Book.objects.filter(author__in=ids),
-            reverse_mapper = lambda book: [book.author_id],
-            decorator = lambda author, books=(): setattr(
+        latest_n_books=LatestNBooks,
+        latest_book_as_class=LatestBook,
+        latest_book=Prefetcher(
+            filter=lambda ids: Book.objects.filter(author__in=ids),
+            reverse_mapper=lambda book: [book.author_id],
+            decorator=lambda author, books=(): setattr(
                 author,
                 'prefetched_latest_book',
                 max(books, key=lambda book: book.created) if books else None
             )
         ),
-        silly = SillyPrefetcher,
+        silly=SillyPrefetcher,
     )
 
     @property
@@ -85,16 +91,14 @@ class Author(models.Model):
             except Book.DoesNotExist:
                 return
 
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
 
-if VERSION < (1, 2):
-    class Book_Tag(models.Model):
-        book = models.ForeignKey("Book")
-        tag = models.ForeignKey("Tag")
 
 class Publisher(models.Model):
     name = models.CharField(max_length=100)
+
 
 class Book(models.Model):
     class Meta:
@@ -105,31 +109,28 @@ class Book(models.Model):
     author = models.ForeignKey(Author)
     publisher = models.ForeignKey(Publisher, null=True)
 
-    if VERSION < (1, 2):
-        tags = models.ManyToManyField(Tag, through="Book_Tag")
-    else:
-        tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag)
 
     objects = PrefetchManager(
-        tags = Prefetcher(
-            filter = lambda ids: (Book_Tag if VERSION < (1, 2) else Book.tags.through).objects.select_related('tag').filter(book__in=ids),
-            reverse_mapper = lambda book_tag: [book_tag.book_id],
-            decorator = lambda user, book_tags=():
+        tags=Prefetcher(
+            filter=lambda ids:Book.tags.through.objects.select_related('tag').filter(book__in=ids),
+            reverse_mapper=lambda book_tag: [book_tag.book_id],
+            decorator=lambda user, book_tags=():
                 setattr(user, 'prefetched_tags', [i.tag for i in book_tags])
         ),
-        similar_books = Prefetcher(
-            filter = lambda ids: Book.objects.filter(author__in=ids),
-            mapper = lambda book: book.author_id,
-            reverse_mapper = lambda book: [book.author_id],
-            decorator = lambda book, books=():
+        similar_books=Prefetcher(
+            filter=lambda ids: Book.objects.filter(author__in=ids),
+            mapper=lambda book: book.author_id,
+            reverse_mapper=lambda book: [book.author_id],
+            decorator=lambda book, books=():
                 setattr(book.author, 'prefetched_books', books),
-            collect = True,
+            collect=True,
         ),
-        similar_books_missing_collect = Prefetcher(
-            filter = lambda ids: Book.objects.filter(author__in=ids),
-            mapper = lambda book: book.author_id,
-            reverse_mapper = lambda book: [book.author_id],
-            decorator = lambda book, books=():
+        similar_books_missing_collect=Prefetcher(
+            filter=lambda ids: Book.objects.filter(author__in=ids),
+            mapper=lambda book: book.author_id,
+            reverse_mapper=lambda book: [book.author_id],
+            decorator=lambda book, books=():
                 setattr(book.author, 'prefetched_books', books),
         ),
     )
@@ -140,9 +141,9 @@ class Book(models.Model):
             return [i for i in self.author.prefetched_books if i != self]
         else:
             return Book.objects.filter(
-                author = self.author_id
+                author=self.author_id
             ).exclude(
-                id = self.id
+                id=self.id
             )
 
     @property
@@ -152,9 +153,10 @@ class Book(models.Model):
         else:
             return self.tags.all()
 
+
 class BookNote(models.Model):
     book = models.ForeignKey("Book", null=True)
     bogus = models.ForeignKey("Book", null=True, related_name="+")
     notes = models.TextField()
 
-    objects = PrefetchManager()
+    objects=PrefetchManager()

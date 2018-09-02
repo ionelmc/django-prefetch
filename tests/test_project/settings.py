@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+
 DEBUG = True
 
 DATABASE_ENGINE = 'sqlite3'
@@ -17,14 +18,13 @@ DATABASES = {
     }
 }
 INSTALLED_APPS = (
-    'django.contrib.auth', 
-    'django.contrib.contenttypes', 
-    'django.contrib.sessions', 
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.sites',
     'test_app',
 )
 SITE_ID = 1
-ROOT_URLCONF = 'test_project.urls'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
