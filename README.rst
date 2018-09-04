@@ -87,8 +87,8 @@ and can use select_related to fetch that data on the same query. However, in
 some cases you cannot design your models that way and need data from reverse
 relations (models that have foreign keys to your objects).
 
-Django 1.4 has prefetch_related_ for this, however, this framework provides greater
-flexibility than Django 1.4's prefetch_related_ queryset method at the cost
+Django has prefetch_related_ for this, however, this framework provides greater
+flexibility than Django's prefetch_related_ queryset method at the cost
 of writting the mapping and query functions for the data. This has the advantage
 that you can do things prefetch_related_ cannot (see the latest_book example_
 bellow).
@@ -111,8 +111,8 @@ Requirements
 ============
 
 :OS: Any
-:Runtime: Python 2.6, 2.7, 3.3+ or PyPy
-:Packages: Django>=1.1
+:Runtime: Python 2.7, 3.3+ or PyPy
+:Packages: Django>=1.9
 
 Example
 =======

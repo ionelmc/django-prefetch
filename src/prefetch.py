@@ -2,13 +2,9 @@ from logging import getLogger
 import time
 import collections
 
-import django
 from django.db import models
 from django.db.models import query
-try:
-    from django.db.models.fields.related import ReverseSingleRelatedObjectDescriptor as ForwardManyToOneDescriptor
-except ImportError:
-    from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
+from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
 
 __version__ = '1.1.0'
 
@@ -38,13 +34,6 @@ class PrefetchManagerMixin(models.Manager):
             qs = qs.using(self._db)
         return qs
 
-    def get_query_set(self):
-        """
-        Django <1.6 compatibility method.
-        """
-
-        return self.get_queryset()
-
     def prefetch(self, *args):
         return self.get_queryset().prefetch(*args)
 
@@ -53,6 +42,15 @@ class PrefetchManager(PrefetchManagerMixin):
     def __init__(self, **kwargs):
         self.prefetch_definitions = kwargs
         super(PrefetchManager, self).__init__()
+
+
+class PrefetchIterable(query.ModelIterable):
+    def __iter__(self):
+        data = list(super(PrefetchIterable, self).__iter__())
+        for name, (forwarders, prefetcher) in self.queryset._prefetch.items():
+            prefetcher.fetch(data, name, self.queryset.model, forwarders,
+                             getattr(self.queryset, '_db', None))
+        return iter(data)
 
 
 class InvalidPrefetch(Exception):
@@ -65,18 +63,17 @@ class PrefetchOption(object):
         self.args = args
         self.kwargs = kwargs
 
+
 P = PrefetchOption
 
 
 class PrefetchQuerySet(query.QuerySet):
     def __init__(self, model=None, query=None, using=None,
                  prefetch_definitions=None, **kwargs):
-        if using is None:  # this is to support Django 1.1
-            super(PrefetchQuerySet, self).__init__(model, query, **kwargs)
-        else:
-            super(PrefetchQuerySet, self).__init__(model, query, using, **kwargs)
+        super(PrefetchQuerySet, self).__init__(model, query, using, **kwargs)
         self._prefetch = {}
         self.prefetch_definitions = prefetch_definitions
+        self._iterable_class = PrefetchIterable
 
     def _clone(self, **kwargs):
         return super(PrefetchQuerySet, self). \
@@ -138,19 +135,11 @@ class PrefetchQuerySet(query.QuerySet):
 
         for forwarders, prefetcher in obj._prefetch.values():
             if forwarders:
-                if django.VERSION < (1, 7) and obj.query.select_related:
-                    if not obj.query.max_depth:
-                        obj.query.add_select_related('__'.join(forwarders))
-                else:
-                    obj = obj.select_related('__'.join(forwarders))
+                obj = obj.select_related('__'.join(forwarders))
         return obj
 
     def iterator(self):
-        data = list(super(PrefetchQuerySet, self).iterator())
-        for name, (forwarders, prefetcher) in self._prefetch.items():
-            prefetcher.fetch(data, name, self.model, forwarders,
-                             getattr(self, '_db', None))
-        return iter(data)
+        return self._iterable_class(self)
 
 
 class Prefetcher(object):
