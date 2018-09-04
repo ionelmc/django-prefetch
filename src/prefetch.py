@@ -1,6 +1,6 @@
-from logging import getLogger
-import time
 import collections
+import time
+from logging import getLogger
 
 from django.db import models
 from django.db.models import query

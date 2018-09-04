@@ -1,5 +1,7 @@
 from django.db import models
-from prefetch import PrefetchManager, Prefetcher
+
+from prefetch import Prefetcher
+from prefetch import PrefetchManager
 
 
 class SillyException(Exception):
@@ -58,7 +60,7 @@ class Author(models.Model):
             mapper=lambda author: author.id,
             reverse_mapper=lambda book: [book.author_id],
             decorator=lambda author, books=():
-                setattr(author, 'prefetched_books', books)
+            setattr(author, 'prefetched_books', books)
         ),
         latest_n_books=LatestNBooks,
         latest_book_as_class=LatestBook,
@@ -113,17 +115,17 @@ class Book(models.Model):
 
     objects = PrefetchManager(
         tags=Prefetcher(
-            filter=lambda ids:Book.tags.through.objects.select_related('tag').filter(book__in=ids),
+            filter=lambda ids: Book.tags.through.objects.select_related('tag').filter(book__in=ids),
             reverse_mapper=lambda book_tag: [book_tag.book_id],
             decorator=lambda user, book_tags=():
-                setattr(user, 'prefetched_tags', [i.tag for i in book_tags])
+            setattr(user, 'prefetched_tags', [i.tag for i in book_tags])
         ),
         similar_books=Prefetcher(
             filter=lambda ids: Book.objects.filter(author__in=ids),
             mapper=lambda book: book.author_id,
             reverse_mapper=lambda book: [book.author_id],
             decorator=lambda book, books=():
-                setattr(book.author, 'prefetched_books', books),
+            setattr(book.author, 'prefetched_books', books),
             collect=True,
         ),
         similar_books_missing_collect=Prefetcher(
@@ -131,7 +133,7 @@ class Book(models.Model):
             mapper=lambda book: book.author_id,
             reverse_mapper=lambda book: [book.author_id],
             decorator=lambda book, books=():
-                setattr(book.author, 'prefetched_books', books),
+            setattr(book.author, 'prefetched_books', books),
         ),
     )
 
@@ -159,4 +161,4 @@ class BookNote(models.Model):
     bogus = models.ForeignKey("Book", null=True, related_name="+")
     notes = models.TextField()
 
-    objects=PrefetchManager()
+    objects = PrefetchManager()
