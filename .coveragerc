@@ -1,9 +1,13 @@
 [paths]
-source = src
+source =
+   src/prefetch
+   */site-packages/prefetch
 
 [run]
-branch = True
-source = src
+branch = true
+source =
+    prefetch
+    tests
 parallel = true
 
 [report]

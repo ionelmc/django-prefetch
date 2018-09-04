@@ -10,11 +10,12 @@ Overview
     * - docs
       - |docs|
     * - tests
-      - | |travis| |appveyor| |requires|
+      - | |travis| |requires|
         | |coveralls| |codecov|
         | |landscape| |scrutinizer| |codacy| |codeclimate|
     * - package
-      - |version| |downloads| |wheel| |supported-versions| |supported-implementations|
+      - | |version| |wheel| |supported-versions| |supported-implementations|
+        | |commits-since|
 
 .. |docs| image:: https://readthedocs.org/projects/django-prefetch/badge/?style=flat
     :target: https://readthedocs.org/projects/django-prefetch
@@ -23,10 +24,6 @@ Overview
 .. |travis| image:: https://travis-ci.org/ionelmc/django-prefetch.svg?branch=master
     :alt: Travis-CI Build Status
     :target: https://travis-ci.org/ionelmc/django-prefetch
-
-.. |appveyor| image:: https://ci.appveyor.com/api/projects/status/github/ionelmc/django-prefetch?branch=master&svg=true
-    :alt: AppVeyor Build Status
-    :target: https://ci.appveyor.com/project/ionelmc/django-prefetch
 
 .. |requires| image:: https://requires.io/github/ionelmc/django-prefetch/requirements.svg?branch=master
     :alt: Requirements Status
@@ -44,7 +41,7 @@ Overview
     :target: https://landscape.io/github/ionelmc/django-prefetch/master
     :alt: Code Quality Status
 
-.. |codacy| image:: https://img.shields.io/codacy/dd58a26620d04bcfa245c7bd74aa0831.svg?style=flat
+.. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg
     :target: https://www.codacy.com/app/ionelmc/django-prefetch
     :alt: Codacy Code Quality Status
 
@@ -52,27 +49,27 @@ Overview
    :target: https://codeclimate.com/github/ionelmc/django-prefetch
    :alt: CodeClimate Quality Status
 
-.. |version| image:: https://img.shields.io/pypi/v/django-prefetch.svg?style=flat
+.. |version| image:: https://img.shields.io/pypi/v/django-prefetch.svg
     :alt: PyPI Package latest release
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |downloads| image:: https://img.shields.io/pypi/dm/django-prefetch.svg?style=flat
-    :alt: PyPI Package monthly downloads
-    :target: https://pypi.python.org/pypi/django-prefetch
+.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/django-prefetch/v1.1.0.svg
+    :alt: Commits since latest release
+    :target: https://github.com/ionelmc/django-prefetch/compare/v1.1.0...master
 
-.. |wheel| image:: https://img.shields.io/pypi/wheel/django-prefetch.svg?style=flat
+.. |wheel| image:: https://img.shields.io/pypi/wheel/django-prefetch.svg
     :alt: PyPI Wheel
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/django-prefetch.svg?style=flat
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/django-prefetch.svg
     :alt: Supported versions
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/django-prefetch.svg?style=flat
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/django-prefetch.svg
     :alt: Supported implementations
     :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/django-prefetch/master.svg?style=flat
+.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/django-prefetch/master.svg
     :alt: Scrutinizer Status
     :target: https://scrutinizer-ci.com/g/ionelmc/django-prefetch/
 

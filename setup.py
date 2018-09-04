@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import
+from __future__ import print_function
 
 import io
 import re
@@ -24,7 +25,7 @@ def read(*names, **kwargs):
 setup(
     name='django-prefetch',
     version='1.1.0',
-    license='BSD',
+    license='BSD 2-Clause License',
     description='Simple and generic model related data prefetch framework for Django solving the '
                 '"1+N queries" problem that happens when you need related data for your objects.',
     long_description='%s\n%s' % (
@@ -55,8 +56,13 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
+        # uncomment if you test on these interpreters:
+        # 'Programming Language :: Python :: Implementation :: IronPython',
+        # 'Programming Language :: Python :: Implementation :: Jython',
+        # 'Programming Language :: Python :: Implementation :: Stackless',
         'Topic :: Utilities',
     ],
     install_requires=['Django>=1.9']
