@@ -2,6 +2,17 @@
 Changelog
 =========
 
+1.2.1 (2018-09-04)
+------------------
+
+* Fixed missing entry in changelog.
+
+1.2.0 (2018-09-04)
+------------------
+
+* Added support for Django 1.11, dropped support for Django <1.9. Contributed by Martin Bachwerk in
+  `#16 <https://github.com/ionelmc/django-prefetch/pull/16>`_.
+
 1.1.0 (2016-02-20)
 ------------------
 
