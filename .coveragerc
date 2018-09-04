@@ -1,7 +1,7 @@
 [paths]
 source =
-   src/prefetch
-   */site-packages/prefetch
+   src
+   */site-packages
 
 [run]
 branch = true

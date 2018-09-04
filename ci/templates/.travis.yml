@@ -12,6 +12,10 @@ matrix:
   include:
 {%- for env in tox_environments %}{{ '' }}
     - python: '{{ '{0[0]}-5.4'.format(env.split('-')) if env.startswith('pypy') else '{0[2]}.{0[3]}'.format(env) }}'
+{% if env.startswith('py37') %}
+      dist: xenial
+      sudo: required
+{% endif %}
       env:
         - TOXENV={{ env }},report,coveralls,codecov
 {%- endfor %}{{ '' }}
