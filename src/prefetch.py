@@ -2,11 +2,12 @@ import collections
 import time
 from logging import getLogger
 
+import django
 from django.db import models
 from django.db.models import query
 from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
 
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 
 logger = getLogger(__name__)
 
@@ -75,10 +76,17 @@ class PrefetchQuerySet(query.QuerySet):
         self.prefetch_definitions = prefetch_definitions
         self._iterable_class = PrefetchIterable
 
-    def _clone(self, **kwargs):
-        return super(PrefetchQuerySet, self). \
-            _clone(_prefetch=self._prefetch,
-                   prefetch_definitions=self.prefetch_definitions, **kwargs)
+    if django.VERSION < (2, 0):
+        def _clone(self, **kwargs):
+            return super(PrefetchQuerySet, self). \
+                _clone(_prefetch=self._prefetch,
+                       prefetch_definitions=self.prefetch_definitions, **kwargs)
+    else:
+        def _clone(self):
+            c = super(PrefetchQuerySet, self)._clone()
+            c._prefetch = self._prefetch
+            c.prefetch_definitions = self.prefetch_definitions
+            return c
 
     def prefetch(self, *names):
         obj = self._clone()
