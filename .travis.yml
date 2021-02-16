@@ -61,13 +61,13 @@ matrix:
       sudo: required
       env:
         - TOXENV=py37-dj111,report,coveralls,codecov
-    - python: 'pypy-5.4'
+    - python: 'pypy2'
       env:
         - TOXENV=pypy-dj19,report,coveralls,codecov
-    - python: 'pypy-5.4'
+    - python: 'pypy2'
       env:
         - TOXENV=pypy-dj110,report,coveralls,codecov
-    - python: 'pypy-5.4'
+    - python: 'pypy2'
       env:
         - TOXENV=pypy-dj111,report,coveralls,codecov
 before_install:
