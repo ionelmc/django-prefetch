@@ -5,7 +5,7 @@ Changelog
 1.2.2 (2021-02-14)
 ------------------
 
-* Added support for Django 1.11
+* Added support for Django 2.0
 
 1.2.1 (2018-09-04)
 ------------------
