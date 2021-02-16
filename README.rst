@@ -12,7 +12,7 @@ Overview
     * - tests
       - | |travis| |requires|
         | |coveralls| |codecov|
-        | |landscape| |scrutinizer| |codacy| |codeclimate|
+        | |scrutinizer| |codacy| |codeclimate|
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
         | |commits-since|
@@ -36,10 +36,6 @@ Overview
 .. |codecov| image:: https://codecov.io/github/ionelmc/django-prefetch/coverage.svg?branch=master
     :alt: Coverage Status
     :target: https://codecov.io/github/ionelmc/django-prefetch
-
-.. |landscape| image:: https://landscape.io/github/ionelmc/django-prefetch/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/ionelmc/django-prefetch/master
-    :alt: Code Quality Status
 
 .. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg
     :target: https://www.codacy.com/app/ionelmc/django-prefetch
