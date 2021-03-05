@@ -17,7 +17,7 @@ cookiecutter:
     email: contact@ionelmc.ro
     full_name: Ionel Cristian Mărieș
     github_username: ionelmc
-    landscape: yes
+    landscape: no
     license: BSD 2-Clause License
     linter: flake8
     package_name: prefetch

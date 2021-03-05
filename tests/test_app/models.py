@@ -108,8 +108,8 @@ class Book(models.Model):
 
     name = models.CharField(max_length=100)
     created = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(Author)
-    publisher = models.ForeignKey(Publisher, null=True)
+    author = models.ForeignKey(Author, models.CASCADE)
+    publisher = models.ForeignKey(Publisher, models.CASCADE, null=True)
 
     tags = models.ManyToManyField(Tag)
 
@@ -157,8 +157,8 @@ class Book(models.Model):
 
 
 class BookNote(models.Model):
-    book = models.ForeignKey("Book", null=True)
-    bogus = models.ForeignKey("Book", null=True, related_name="+")
+    book = models.ForeignKey("Book", models.CASCADE, null=True)
+    bogus = models.ForeignKey("Book", models.CASCADE, null=True, related_name="+")
     notes = models.TextField()
 
     objects = PrefetchManager()

@@ -28,6 +28,9 @@ matrix:
     - python: '3.4'
       env:
         - TOXENV=py34-dj111,report,coveralls,codecov
+    - python: '3.4'
+      env:
+          - TOXENV=py34-dj20,report,coveralls,codecov
     - python: '3.5'
       env:
         - TOXENV=py35-dj19,report,coveralls,codecov
@@ -37,6 +40,9 @@ matrix:
     - python: '3.5'
       env:
         - TOXENV=py35-dj111,report,coveralls,codecov
+    - python: '3.5'
+      env:
+          - TOXENV=py35-dj20,report,coveralls,codecov
     - python: '3.6'
       env:
         - TOXENV=py36-dj19,report,coveralls,codecov
@@ -46,6 +52,9 @@ matrix:
     - python: '3.6'
       env:
         - TOXENV=py36-dj111,report,coveralls,codecov
+    - python: '3.6'
+      env:
+          - TOXENV=py36-dj20,report,coveralls,codecov
     - python: '3.7'
       dist: xenial
       sudo: required
@@ -61,13 +70,18 @@ matrix:
       sudo: required
       env:
         - TOXENV=py37-dj111,report,coveralls,codecov
-    - python: 'pypy-5.4'
+    - python: '3.7'
+      dist: xenial
+      sudo: required
+      env:
+          - TOXENV=py37-dj20,report,coveralls,codecov
+    - python: 'pypy2'
       env:
         - TOXENV=pypy-dj19,report,coveralls,codecov
-    - python: 'pypy-5.4'
+    - python: 'pypy2'
       env:
         - TOXENV=pypy-dj110,report,coveralls,codecov
-    - python: 'pypy-5.4'
+    - python: 'pypy2'
       env:
         - TOXENV=pypy-dj111,report,coveralls,codecov
 before_install:
