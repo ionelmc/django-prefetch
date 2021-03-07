@@ -84,7 +84,7 @@ Django has prefetch_related_ for this, however, this framework provides greater
 flexibility than Django's prefetch_related_ queryset method at the cost
 of writting the mapping and query functions for the data. This has the advantage
 that you can do things prefetch_related_ cannot (see the latest_book example_
-bellow).
+below).
 
 * Free software: BSD license
 
