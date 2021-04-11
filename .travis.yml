@@ -1,152 +1,148 @@
 language: python
-sudo: false
-cache: pip
+dist: xenial
+virt: lxd
+cache: false
 env:
   global:
     - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
     - SEGFAULT_SIGNALS=all
-  matrix:
-    - TOXENV=check
-    - TOXENV=docs
+    - LANG=en_US.UTF-8
 matrix:
   include:
-    - python: '2.7'
-      env:
-        - TOXENV=py27-dj111,report,coveralls,codecov
     - python: '3.6'
       env:
-        - TOXENV=py36-dj111,report,coveralls,codecov
-    - python: '3.7'
-      dist: xenial
-      sudo: required
-      env:
-        - TOXENV=py37-dj111,report,coveralls,codecov
-    - python: '3.8'
-      env:
-        - TOXENV=py38-dj111,report,coveralls,codecov
-    - python: '3.9'
-      env:
-        - TOXENV=py39-dj111,report,coveralls,codecov
-    - python: 'pypy'
-      env:
-        - TOXENV=pypy-dj111,report,coveralls,codecov
+        - TOXENV=check
     - python: '3.6'
       env:
-        - TOXENV=py36-dj20,report,coveralls,codecov
-    - python: '3.6'
-      env:
-        - TOXENV=py36-dj21,report,coveralls,codecov
-    - python: '3.6'
-      env:
-        - TOXENV=py36-dj22,report,coveralls,codecov
-    - python: '3.6'
-      env:
-        - TOXENV=py36-dj30,report,coveralls,codecov
-    - python: '3.6'
-      env:
-        - TOXENV=py36-dj31,report,coveralls,codecov
-    - python: '3.6'
-      env:
-        - TOXENV=py36-dj32,report,coveralls,codecov
-    - python: '3.7'
-      dist: xenial
-      sudo: required
-      env:
-        - TOXENV=py37-dj20,report,coveralls,codecov
-    - python: '3.7'
-      dist: xenial
-      sudo: required
-      env:
-        - TOXENV=py37-dj21,report,coveralls,codecov
-    - python: '3.7'
-      dist: xenial
-      sudo: required
-      env:
-        - TOXENV=py37-dj22,report,coveralls,codecov
-    - python: '3.7'
-      dist: xenial
-      sudo: required
-      env:
-        - TOXENV=py37-dj30,report,coveralls,codecov
-    - python: '3.7'
-      dist: xenial
-      sudo: required
-      env:
-        - TOXENV=py37-dj31,report,coveralls,codecov
-    - python: '3.7'
-      dist: xenial
-      sudo: required
-      env:
-        - TOXENV=py37-dj32,report,coveralls,codecov
-    - python: '3.8'
-      env:
-        - TOXENV=py38-dj20,report,coveralls,codecov
-    - python: '3.8'
-      env:
-        - TOXENV=py38-dj21,report,coveralls,codecov
-    - python: '3.8'
-      env:
-        - TOXENV=py38-dj22,report,coveralls,codecov
-    - python: '3.8'
-      env:
-        - TOXENV=py38-dj30,report,coveralls,codecov
-    - python: '3.8'
-      env:
-        - TOXENV=py38-dj31,report,coveralls,codecov
-    - python: '3.8'
-      env:
-        - TOXENV=py38-dj32,report,coveralls,codecov
-    - python: '3.9'
-      env:
-        - TOXENV=py39-dj20,report,coveralls,codecov
-    - python: '3.9'
-      env:
-        - TOXENV=py39-dj21,report,coveralls,codecov
-    - python: '3.9'
-      env:
-        - TOXENV=py39-dj22,report,coveralls,codecov
-    - python: '3.9'
-      env:
-        - TOXENV=py39-dj30,report,coveralls,codecov
-    - python: '3.9'
-      env:
-        - TOXENV=py39-dj31,report,coveralls,codecov
-    - python: '3.9'
-      env:
-        - TOXENV=py39-dj32,report,coveralls,codecov
-    - python: 'pypy3'
-      env:
-        - TOXENV=pypy3-dj20,report,coveralls,codecov
-    - python: 'pypy3'
-      env:
-        - TOXENV=pypy3-dj21,report,coveralls,codecov
-    - python: 'pypy3'
-      env:
-        - TOXENV=pypy3-dj22,report,coveralls,codecov
-    - python: 'pypy3'
-      env:
-        - TOXENV=pypy3-dj30,report,coveralls,codecov
-    - python: 'pypy3'
-      env:
-        - TOXENV=pypy3-dj31,report,coveralls,codecov
-    - python: 'pypy3'
-      env:
-        - TOXENV=pypy3-dj32,report,coveralls,codecov
+        - TOXENV=docs
+    - env:
+        - TOXENV=py27-dj111,codecov,coveralls
+      python: '2.7'
+    - env:
+        - TOXENV=py36-dj111,codecov,coveralls
+      python: '3.6'
+    - env:
+        - TOXENV=py37-dj111,codecov,coveralls
+      python: '3.7'
+    - env:
+        - TOXENV=py38-dj111,codecov,coveralls
+      python: '3.8'
+    - env:
+        - TOXENV=py39-dj111,codecov,coveralls
+      python: '3.9'
+    - env:
+        - TOXENV=pypy-dj111,codecov,coveralls
+      python: 'pypy'
+    - env:
+        - TOXENV=py36-dj20,codecov,coveralls
+      python: '3.6'
+    - env:
+        - TOXENV=py36-dj21,codecov,coveralls
+      python: '3.6'
+    - env:
+        - TOXENV=py36-dj22,codecov,coveralls
+      python: '3.6'
+    - env:
+        - TOXENV=py36-dj30,codecov,coveralls
+      python: '3.6'
+    - env:
+        - TOXENV=py36-dj31,codecov,coveralls
+      python: '3.6'
+    - env:
+        - TOXENV=py36-dj32,codecov,coveralls
+      python: '3.6'
+    - env:
+        - TOXENV=py37-dj20,codecov,coveralls
+      python: '3.7'
+    - env:
+        - TOXENV=py37-dj21,codecov,coveralls
+      python: '3.7'
+    - env:
+        - TOXENV=py37-dj22,codecov,coveralls
+      python: '3.7'
+    - env:
+        - TOXENV=py37-dj30,codecov,coveralls
+      python: '3.7'
+    - env:
+        - TOXENV=py37-dj31,codecov,coveralls
+      python: '3.7'
+    - env:
+        - TOXENV=py37-dj32,codecov,coveralls
+      python: '3.7'
+    - env:
+        - TOXENV=py38-dj20,codecov,coveralls
+      python: '3.8'
+    - env:
+        - TOXENV=py38-dj21,codecov,coveralls
+      python: '3.8'
+    - env:
+        - TOXENV=py38-dj22,codecov,coveralls
+      python: '3.8'
+    - env:
+        - TOXENV=py38-dj30,codecov,coveralls
+      python: '3.8'
+    - env:
+        - TOXENV=py38-dj31,codecov,coveralls
+      python: '3.8'
+    - env:
+        - TOXENV=py38-dj32,codecov,coveralls
+      python: '3.8'
+    - env:
+        - TOXENV=py39-dj20,codecov,coveralls
+      python: '3.9'
+    - env:
+        - TOXENV=py39-dj21,codecov,coveralls
+      python: '3.9'
+    - env:
+        - TOXENV=py39-dj22,codecov,coveralls
+      python: '3.9'
+    - env:
+        - TOXENV=py39-dj30,codecov,coveralls
+      python: '3.9'
+    - env:
+        - TOXENV=py39-dj31,codecov,coveralls
+      python: '3.9'
+    - env:
+        - TOXENV=py39-dj32,codecov,coveralls
+      python: '3.9'
+    - env:
+        - TOXENV=pypy3-dj20,codecov,coveralls
+        - TOXPYTHON=pypy3
+      python: 'pypy3'
+    - env:
+        - TOXENV=pypy3-dj21,codecov,coveralls
+        - TOXPYTHON=pypy3
+      python: 'pypy3'
+    - env:
+        - TOXENV=pypy3-dj22,codecov,coveralls
+        - TOXPYTHON=pypy3
+      python: 'pypy3'
+    - env:
+        - TOXENV=pypy3-dj30,codecov,coveralls
+        - TOXPYTHON=pypy3
+      python: 'pypy3'
+    - env:
+        - TOXENV=pypy3-dj31,codecov,coveralls
+        - TOXPYTHON=pypy3
+      python: 'pypy3'
+    - env:
+        - TOXENV=pypy3-dj32,codecov,coveralls
+        - TOXPYTHON=pypy3
+      python: 'pypy3'
 before_install:
   - python --version
   - uname -a
-  - lsb_release -a
+  - lsb_release -a || true
 install:
-  - pip install tox
+  - python -mpip install --progress-bar=off tox -rci/requirements.txt
   - virtualenv --version
-  - easy_install --version
   - pip --version
   - tox --version
 script:
   - tox -v
 after_failure:
-  - more .tox/log/* | cat
-  - more .tox/*/log/* | cat
+  - cat .tox/log/*
+  - cat .tox/*/log/*
 notifications:
   email:
     on_success: never
