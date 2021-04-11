@@ -68,6 +68,7 @@ class _AssertRaisesContext(object):
 
 
 class PrefetchTests(TestCase):
+    databases = ['default', 'secondary']
 
     def setUp(self):
         super(PrefetchTests, self).setUp()

@@ -16,14 +16,13 @@ Overview
     * - package
       - | |version| |wheel| |supported-versions| |supported-implementations|
         | |commits-since|
-
 .. |docs| image:: https://readthedocs.org/projects/django-prefetch/badge/?style=flat
-    :target: https://readthedocs.org/projects/django-prefetch
+    :target: https://django-prefetch.readthedocs.io/
     :alt: Documentation Status
 
-.. |travis| image:: https://travis-ci.org/ionelmc/django-prefetch.svg?branch=master
+.. |travis| image:: https://api.travis-ci.com/ionelmc/django-prefetch.svg?branch=master
     :alt: Travis-CI Build Status
-    :target: https://travis-ci.org/ionelmc/django-prefetch
+    :target: https://travis-ci.com/github/ionelmc/django-prefetch
 
 .. |requires| image:: https://requires.io/github/ionelmc/django-prefetch/requirements.svg?branch=master
     :alt: Requirements Status
@@ -33,11 +32,11 @@ Overview
     :alt: Coverage Status
     :target: https://coveralls.io/r/ionelmc/django-prefetch
 
-.. |codecov| image:: https://codecov.io/github/ionelmc/django-prefetch/coverage.svg?branch=master
+.. |codecov| image:: https://codecov.io/gh/ionelmc/django-prefetch/branch/master/graphs/badge.svg?branch=master
     :alt: Coverage Status
     :target: https://codecov.io/github/ionelmc/django-prefetch
 
-.. |codacy| image:: https://img.shields.io/codacy/REPLACE_WITH_PROJECT_ID.svg
+.. |codacy| image:: https://img.shields.io/codacy/grade/11d1f80103ca434db15e2804b61c522f.svg
     :target: https://www.codacy.com/app/ionelmc/django-prefetch
     :alt: Codacy Code Quality Status
 
@@ -47,25 +46,26 @@ Overview
 
 .. |version| image:: https://img.shields.io/pypi/v/django-prefetch.svg
     :alt: PyPI Package latest release
-    :target: https://pypi.python.org/pypi/django-prefetch
+    :target: https://pypi.org/project/django-prefetch
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/django-prefetch.svg
+    :alt: PyPI Wheel
+    :target: https://pypi.org/project/django-prefetch
+
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/django-prefetch.svg
+    :alt: Supported versions
+    :target: https://pypi.org/project/django-prefetch
+
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/django-prefetch.svg
+    :alt: Supported implementations
+    :target: https://pypi.org/project/django-prefetch
 
 .. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/django-prefetch/v1.2.1.svg
     :alt: Commits since latest release
     :target: https://github.com/ionelmc/django-prefetch/compare/v1.2.1...master
 
-.. |wheel| image:: https://img.shields.io/pypi/wheel/django-prefetch.svg
-    :alt: PyPI Wheel
-    :target: https://pypi.python.org/pypi/django-prefetch
 
-.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/django-prefetch.svg
-    :alt: Supported versions
-    :target: https://pypi.python.org/pypi/django-prefetch
-
-.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/django-prefetch.svg
-    :alt: Supported implementations
-    :target: https://pypi.python.org/pypi/django-prefetch
-
-.. |scrutinizer| image:: https://img.shields.io/scrutinizer/g/ionelmc/django-prefetch/master.svg
+.. |scrutinizer| image:: https://img.shields.io/scrutinizer/quality/g/ionelmc/django-prefetch/master.svg
     :alt: Scrutinizer Status
     :target: https://scrutinizer-ci.com/g/ionelmc/django-prefetch/
 
@@ -201,3 +201,27 @@ TODO
 
 * Document ``collect`` option of ``Prefetcher``
 * Create tests covering custom ``collect`` and ``mapper``
+
+Development
+===========
+
+To run all the tests run::
+
+    tox
+
+Note, to combine the coverage data from all the tox environments run:
+
+.. list-table::
+    :widths: 10 90
+    :stub-columns: 1
+
+    - - Windows
+      - ::
+
+            set PYTEST_ADDOPTS=--cov-append
+            tox
+
+    - - Other
+      - ::
+
+            PYTEST_ADDOPTS=--cov-append tox
