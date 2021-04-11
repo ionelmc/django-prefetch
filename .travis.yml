@@ -27,7 +27,7 @@ matrix:
     - python: '3.9'
       env:
         - TOXENV=py39-dj111,report,coveralls,codecov
-    - python: 'pypy-5.4'
+    - python: 'pypy'
       env:
         - TOXENV=pypy-dj111,report,coveralls,codecov
     - python: '3.6'
@@ -114,22 +114,22 @@ matrix:
     - python: '3.9'
       env:
         - TOXENV=py39-dj32,report,coveralls,codecov
-    - python: 'pypy3-5.4'
+    - python: 'pypy3'
       env:
         - TOXENV=pypy3-dj20,report,coveralls,codecov
-    - python: 'pypy3-5.4'
+    - python: 'pypy3'
       env:
         - TOXENV=pypy3-dj21,report,coveralls,codecov
-    - python: 'pypy3-5.4'
+    - python: 'pypy3'
       env:
         - TOXENV=pypy3-dj22,report,coveralls,codecov
-    - python: 'pypy3-5.4'
+    - python: 'pypy3'
       env:
         - TOXENV=pypy3-dj30,report,coveralls,codecov
-    - python: 'pypy3-5.4'
+    - python: 'pypy3'
       env:
         - TOXENV=pypy3-dj31,report,coveralls,codecov
-    - python: 'pypy3-5.4'
+    - python: 'pypy3'
       env:
         - TOXENV=pypy3-dj32,report,coveralls,codecov
 before_install:
