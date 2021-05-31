@@ -2,7 +2,7 @@
 Changelog
 =========
 
-1.2.2 (2021-04-11)
+1.2.3 (2021-05-30)
 ------------------
 
 * Now support any primary key in master table with default mapper, not only "id" column.
