@@ -5,6 +5,12 @@ Changelog
 1.2.2 (2021-04-11)
 ------------------
 
+* Now support any primary key in master table with default mapper, not only "id" column.
+
+
+1.2.2 (2021-04-11)
+------------------
+
 * Added support for Django 2.0
 
 1.2.1 (2018-09-04)
