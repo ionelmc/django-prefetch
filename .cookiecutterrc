@@ -29,7 +29,7 @@ default_context:
     project_short_description: Simple and generic model related data prefetch framework for Django solving the "1+N queries" problem that happens when you need related data for your objects.
     pypi_badge: yes
     pypi_disable_upload: no
-    release_date: today
+    release_date: '2021-04-11'
     repo_hosting: github.com
     repo_hosting_domain: github.com
     repo_name: django-prefetch
@@ -47,7 +47,8 @@ default_context:
     test_runner: pytest
     travis: yes
     travis_osx: no
-    version: 1.2.1
+    version: 1.2.2
+    version_manager: tbump
     website: http://blog.ionelmc.ro
     year_from: '2012'
     year_to: '2021'

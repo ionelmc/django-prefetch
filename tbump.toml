@@ -1,0 +1,39 @@
+github_url = "https://github.com/ionelmc/django-prefetch/"
+
+[version]
+current = "1.2.2"
+regex = '(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
+
+[git]
+message_template = "Bump to {new_version}"
+tag_template = "v{new_version}"
+
+[[file]]
+src = "setup.py"
+search = "version='{current_version}'"
+
+[[file]]
+src = "README.rst"
+search = "/v{current_version}.svg"
+
+[[file]]
+src = "README.rst"
+search = "/v{current_version}...master"
+
+[[file]]
+src = "docs/conf.py"
+search = "version = release = '{current_version}'"
+
+[[file]]
+src = "src/prefetch.py"
+search = "__version__ = '{current_version}'"
+
+[[before_commit]]
+name = "check changelog"
+cmd = "grep -q {new_version} CHANGELOG.rst"
+
+# Or run some commands after the git tag and the branch
+# have been pushed:
+#  [[after_push]]
+#  name = "publish"
+#  cmd = "./publish.sh"

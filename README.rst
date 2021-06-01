@@ -62,7 +62,7 @@ Overview
 
 .. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/django-prefetch/v1.2.2.svg
     :alt: Commits since latest release
-    :target: https://github.com/ionelmc/django-prefetch/compare/v1.2.1...master
+    :target: https://github.com/ionelmc/django-prefetch/compare/v1.2.2...master
 
 
 .. |scrutinizer| image:: https://img.shields.io/scrutinizer/quality/g/ionelmc/django-prefetch/master.svg
