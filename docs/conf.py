@@ -20,7 +20,7 @@ project = 'django-prefetch'
 year = '2012-2021'
 author = 'Ionel Cristian Mărieș'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '1.2.2'
+version = release = '1.2.3'
 
 pygments_style = 'trac'
 templates_path = ['.']

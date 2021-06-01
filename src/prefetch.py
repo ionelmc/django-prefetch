@@ -7,7 +7,7 @@ from django.db import models
 from django.db.models import query
 from django.db.models.fields.related_descriptors import ForwardManyToOneDescriptor
 
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 logger = getLogger(__name__)
 

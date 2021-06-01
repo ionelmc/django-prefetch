@@ -60,9 +60,9 @@ Overview
     :alt: Supported implementations
     :target: https://pypi.org/project/django-prefetch
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/django-prefetch/v1.2.2.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/ionelmc/django-prefetch/v1.2.3.svg
     :alt: Commits since latest release
-    :target: https://github.com/ionelmc/django-prefetch/compare/v1.2.2...master
+    :target: https://github.com/ionelmc/django-prefetch/compare/v1.2.3...master
 
 
 .. |scrutinizer| image:: https://img.shields.io/scrutinizer/quality/g/ionelmc/django-prefetch/master.svg
