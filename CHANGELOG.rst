@@ -2,11 +2,11 @@
 Changelog
 =========
 
-1.2.3 (2021-05-30)
+1.2.3 (2021-06-01)
 ------------------
 
 * Now support any primary key in master table with default mapper, not only "id" column.
-
+  Contributed by Stas Fomin in `#20 <https://github.com/ionelmc/django-prefetch/pull/20>`_.
 
 1.2.2 (2021-04-11)
 ------------------
