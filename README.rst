@@ -130,7 +130,7 @@ Here's a simple example of models and prefetch setup::
                 decorator = lambda author, books=(): setattr(
                     author,
                     'latest_book',
-                    max(books, key=lambda book: book.created)
+                    max(books, key=lambda book: book.created) if books else None
                 )
             )
         )

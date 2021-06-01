@@ -194,7 +194,7 @@ class Prefetcher(object):
 
     * mapper(object):
 
-        Optional (defaults to ``lambda obj: obj.id``).
+        Optional (defaults to ``lambda obj: obj.pk``).
 
         A function that returns the key for a given object in your query set.
 
@@ -232,7 +232,7 @@ class Prefetcher(object):
 
     @staticmethod
     def mapper(obj):
-        return obj.id
+        return obj.pk
 
     def fetch(self, dataset, name, model, forwarders, db):
         collect = self.collect or forwarders
