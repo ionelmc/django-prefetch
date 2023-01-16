@@ -143,9 +143,6 @@ class PrefetchQuerySet(query.QuerySet):
                 obj = obj.select_related('__'.join(forwarders))
         return obj
 
-    def iterator(self):
-        return self._iterable_class(self)
-
 
 class Prefetcher(object):
     """
